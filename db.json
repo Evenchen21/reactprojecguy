@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@gmail.com",
+      "password": "password123",
+      "phone": "123-456-7890",
+      "isBusiness": true,
+      "isAdmin": false,
+      "address": {
+        "street": "Main St",
+        "houseNumber": "123",
+        "zipCode": "12345"
+      }
+    },
+    {
+      "firstName": "Guy",
+      "lastName": "Even-Chen",
+      "email": "admin@gmail.com",
+      "password": "administrator",
+      "phone": "0501234678",
+      "isBusiness": false,
+      "isAdmin": true,
+      "address": {
+        "street": "Second St main",
+        "houseNumber": "456",
+        "zipCode": "67890"
+      }
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane@gmail.com",
+      "password": "jane12345678",
+      "phone": "987-654-3210",
+      "isBusiness": false,
+      "isAdmin": false,
+      "address": {
+        "street": "Third St",
+        "houseNumber": "789",
+        "zipCode": "54321"
+      }
+    }
+  ]
+}

@@ -1,9 +1,10 @@
 import { FunctionComponent } from "react";
-import { Form, Button, Container, Row, Col, InputGroup } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import NavBar from "./NavBar";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { addUser } from "../Services/UserService";
 
 interface RegisterProps {}
 
@@ -26,6 +27,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
       street: "",
       houseNumber: "",
       zipCode: "",
+      isBusiness: false, //default//
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -59,7 +61,17 @@ const Register: FunctionComponent<RegisterProps> = () => {
         .required("Zip code is required"),
     }),
     onSubmit: (values) => {
-      // Handle form submission here
+      const userData = {
+        ...values,
+        name: `${values.firstName} ${values.middleName} ${values.lastName}`.trim(),
+        isAdmin: false,
+      };
+      addUser(userData)
+        .then((res) => {
+          navigate("/home");
+          sessionStorage.setItem("userId", res.data.id);
+        })
+        .catch((err) => console.log(err));
     },
   });
 
@@ -312,15 +324,21 @@ const Register: FunctionComponent<RegisterProps> = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value=""
+              name="isBusiness"
               id="flexCheckDefault"
+              checked={formik.values.isBusiness}
+              onChange={formik.handleChange}
             />
             {/* sign up as business option */}
-            <label className="form-check-label ms-2" htmlFor="flexCheckDefault">
-              Sign-Up as Business
+            <label
+              style={{ cursor: "pointer", color: "darkred" }}
+              className="form-check-label ms-2"
+              htmlFor="flexCheckDefault"
+            >
+              Sign-Up as Business User
             </label>
           </div>
-
+          {/* submit the form to the DB */}
           <div className="d-flex gap-2 mt-3 justify-content-center">
             <Button variant="success" type="submit">
               SUBMIT
@@ -328,7 +346,10 @@ const Register: FunctionComponent<RegisterProps> = () => {
             <Button
               variant="danger"
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => {
+                formik.resetForm();
+                navigate("/home");
+              }}
             >
               Cancel
             </Button>
