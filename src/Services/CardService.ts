@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const api: string = process.env.REACT_APP_API + "/users";
+const api: string = process.env.REACT_APP_API + "/cards";
+
 export function getCardById(cardId: string) {
-  return axios.get(`${api}/cards/${cardId}`);
+  return axios.get(`${api}/${cardId}`);
 }
 
 export function getAllCards() {
-  return axios.get(`${api}/cards`);
+  return axios.get(api);
 }
 
 export function getCardsByUserId(userId: string) {

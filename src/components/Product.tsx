@@ -1,5 +1,4 @@
 import { FunctionComponent, SetStateAction, useEffect, useState } from "react";
-import NavBar from "./NavBar";
 import { getAllProducts } from "../Services/productsService";
 import Product from "../Interfaces/Product";
 import { getUserById } from "../Services/UserService";
@@ -43,7 +42,6 @@ const Products: FunctionComponent<ProductsProps> = () => {
 
   return (
     <>
-      <NavBar />
       <div className="container">
         <h4 className="display-4 text-center">PRODUCTS</h4>
         {isAdmin && (

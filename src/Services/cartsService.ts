@@ -3,41 +3,69 @@ import Product from "../Interfaces/Product";
 
 const api: string = process.env.REACT_APP_API + "/carts";
 
-// create cart
-// register
 export function createCart(userId: string) {
-  return axios.post(api, { userId, products: [], active: true });
+  return axios.post(api, {
+    userId: userId,
+    products: [],
+    active: true,
+  });
 }
 
-// add to cart
-export async function addToCart(product: Product) {
-  try {
-    // get userId from session
-    const userId = sessionStorage.getItem("userId");
-
-    // get user cart according to userId
-    const userCart = await axios.get(`${api}?userId=${userId}&&active=true`);
-
-    // userCart.data[0] - user cart
-    // add to products array the wanted product
-    userCart.data[0].products.push(product);
-
-    // decrease product quantity
-
-    // update cart in db.json
-    return axios.patch(`${api}/${userCart.data[0].id}`, {
-      products: userCart.data[0].products,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// get user cart
-export function getUserCart() {
-  // get userId from session
+export function addToCart(product: Product) {
   const userId = sessionStorage.getItem("userId");
+  return getUserCart()
+    .then((res: any) => {
+      if (res.data.length) {
+        const cart = res.data[0];
+        const products = cart.products || [];
+        products.push(product);
+        return axios.put(`${api}/${cart.id}`, {
+          ...cart,
+          products: products,
+        });
+      } else {
+        return axios.post(api, {
+          userId: userId,
+          products: [product],
+          active: true,
+        });
+      }
+    })
+    .catch((err: any) => console.log(err));
+}
 
-  // get user cart according to userId
-  return axios.get(`${api}?userId=${userId}&&active=true`);
+export function getUserCart() {
+  const userId = sessionStorage.getItem("userId");
+  return axios.get(`${api}?userId=${userId}`);
+}
+
+export function removeFromCart(productId: string) {
+  return getUserCart()
+    .then((res: any) => {
+      if (res.data.length) {
+        const cart = res.data[0];
+        const products = cart.products.filter(
+          (p: Product) => p.id !== productId
+        );
+        return axios.put(`${api}/${cart.id}`, {
+          ...cart,
+          products: products,
+        });
+      }
+    })
+    .catch((err: any) => console.log(err));
+}
+
+export function clearCart() {
+  return getUserCart()
+    .then((res: any) => {
+      if (res.data.length) {
+        const cart = res.data[0];
+        return axios.put(`${api}/${cart.id}`, {
+          ...cart,
+          products: [],
+        });
+      }
+    })
+    .catch((err: any) => console.log(err));
 }

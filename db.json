@@ -42,5 +42,128 @@
         "zipCode": "54321"
       }
     }
+  ],
+  "products": [
+    {
+      "name": "Microsoft Earphones",
+      "price": 200,
+      "category": "Earphones & Headphones",
+      "description": "The Microsoft new earphones with high quality",
+      "image": "https://rukminim1.flixcart.com/image/416/416/k0flmkw0/headphone/u/2/h/queer-original-nokia-microsoft-wh-108-wired-headset-black-original-imafk8c6pjy2rhax.jpeg?q=70",
+      "id": "1",
+      "quantity": 10
+    },
+    {
+      "name": "Microsoft Headphones",
+      "price": 200,
+      "category": "Earphones & Headphones",
+      "description": "The Microsoft new earphones with high quality",
+      "image": "https://m.media-amazon.com/images/I/712lRY36XYS.jpg",
+      "id": "2",
+      "quantity": 12
+    },
+    {
+      "name": "Asus Vivobook",
+      "price": 3600,
+      "category": "Laptops",
+      "description": "Wondeful laptops",
+      "image": "https://www.asus.com/media/Odin/Websites/global/Series/12.png",
+      "id": "3",
+      "quantity": 2
+    }
+  ],
+  "cards": [
+    {
+      "id": "4576033",
+      "title": "first card",
+      "subtitle": "this is the first card",
+      "description": "this is the first card",
+      "phone": "050-0000000",
+      "email": "first@card.com",
+      "web": "https://www.firstcard.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
+        "alt": "Business chart"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Tel Aviv",
+        "street": "test",
+        "houseNumber": "3",
+        "zip": "12345"
+      },
+      "bizNumber": "4576033",
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "2308992",
+      "title": "second card",
+      "subtitle": "this is the second card",
+      "description": "this is the second card",
+      "phone": "050-0000000",
+      "email": "second@card.com",
+      "web": "https://www.secondcard.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
+        "alt": "Business chart"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Tel Aviv",
+        "street": "test",
+        "houseNumber": "3",
+        "zip": "12345"
+      },
+      "bizNumber": "2308992",
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "6275908",
+      "title": "third card",
+      "subtitle": "this is the third card",
+      "description": "this is the third card",
+      "phone": "050-0000000",
+      "email": "third@card.com",
+      "web": "https://www.thirdcard.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
+        "alt": "Business chart"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Tel Aviv",
+        "street": "test",
+        "houseNumber": "3",
+        "zip": "12345"
+      },
+      "bizNumber": "6275908",
+      "likes": [],
+      "userId": "1"
+    }
+  ],
+  "carts": [
+    {
+      "id": "1",
+      "userId": "1",
+      "products": [],
+      "active": true
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "products": [],
+      "active": true
+    },
+    {
+      "id": "3",
+      "userId": "a29b",
+      "products": [],
+      "active": true
+    }
   ]
 }
