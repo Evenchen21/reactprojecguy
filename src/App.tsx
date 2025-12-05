@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Cart from "./components/Card";
+import Card from "./components/Card";
 
 // Route the different pages in the Code // PLEASE KEEP THIS DO NOT DELETE //
 
@@ -15,11 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/register" element={<Register />} />
-
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

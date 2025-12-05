@@ -18,7 +18,7 @@ const UpdateCardModal: FunctionComponent<UpdateCardModalProps> = ({
   return (
     <Modal show={show} onHide={() => onHide()} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Update Card</Modal.Title>
+        <Modal.Title>Business Card Update </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <UpdateCard onHide={onHide} cardId={cardId} refresh={refresh} />

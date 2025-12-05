@@ -51,12 +51,12 @@
       "id": "4576033",
       "title": "Dell Technologies",
       "subtitle": "Computers, Monitors & Technology Solutions",
-      "description": "1 Dell Way, Round Rock, TX 78682",
+      "description": "PC and Tech Company",
       "phone": "006374432",
       "email": "NoEmail@dell.com",
       "web": "https://www.dell.com/en-uk",
       "image": {
-        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAMmGS2QqOuFAD_A_Je2y3JRoWaE-K9WWgCw&s",
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR8OGVimx5SlR1miyrwNcauJ3HuknHPf_cnw&s",
         "alt": "Business Dell logo"
       },
       "address": {
@@ -118,26 +118,6 @@
       "bizNumber": "6275908",
       "likes": [],
       "userId": "1"
-    }
-  ],
-  "carts": [
-    {
-      "id": "1",
-      "userId": "1",
-      "products": [],
-      "active": true
-    },
-    {
-      "id": "2",
-      "userId": "2",
-      "products": [],
-      "active": true
-    },
-    {
-      "id": "3",
-      "userId": "a29b",
-      "products": [],
-      "active": true
     }
   ]
 }

@@ -78,6 +78,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                     </p>
                   </Card.Body>
                   <Card.Footer className="bg-white border-0 d-flex justify-content-between align-items-center">
+                    {/* Buttons */}
                     <button className="btn btn-link border-0 p-0 text-muted">
                       <i
                         className="fa-solid fa-phone"
@@ -87,27 +88,27 @@ const Home: FunctionComponent<HomeProps> = () => {
 
                     <div className="d-flex gap-3">
                       {(isAdmin || user?.isBusiness) && (
-                        <button
-                          className="btn btn-link border-0 p-0 text-muted"
-                          onClick={() => {
-                            setSelectedCardId(card.id || "");
-                            setShowDeleteModal(true);
-                          }}
-                        >
-                          <i className="fa-solid fa-trash"></i>
-                        </button>
-                      )}
+                        <>
+                          <button
+                            className="btn btn-link border-0 p-0 text-muted"
+                            onClick={() => {
+                              setSelectedCardId(card.id || "");
+                              setShowDeleteModal(true);
+                            }}
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
 
-                      {(isAdmin || user?.isBusiness) && (
-                        <button
-                          className="btn btn-link border-0 p-0 text-muted"
-                          onClick={() => {
-                            setSelectedCardId(card.id || "");
-                            setShowUpdateModal(true);
-                          }}
-                        >
-                          <i className="fa-solid fa-pen-to-square"></i>
-                        </button>
+                          <button
+                            className="btn btn-link border-0 p-0 text-muted"
+                            onClick={() => {
+                              setSelectedCardId(card.id || "");
+                              setShowUpdateModal(true);
+                            }}
+                          >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </>
                       )}
 
                       {(isLoggedIn || user?.isBusiness) && (
@@ -120,9 +121,15 @@ const Home: FunctionComponent<HomeProps> = () => {
                 </Card>
               </div>
             ))}
+            {/* Add Card Button */}
+            {(isLoggedIn || user?.isBusiness) && (
+              <button className="btn btn-link border-0 p-0 text-muted">
+                <i className="fa-solid fa-circle-plus"></i>
+              </button>
+            )}
           </div>
         ) : (
-          <p className="text-center">-- No cards available! ---</p>
+          <>?</>
         )}
       </div>
 

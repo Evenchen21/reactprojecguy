@@ -45,7 +45,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
       .then((res) => {
         setCard(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => <>ERROR Fetching Card</>);
   }, [cardId]);
 
   const formik = useFormik({
@@ -76,9 +76,8 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
         .then(() => {
           onHide();
           refresh();
-          alert("Card updated successfully!");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => <></>);
     },
   });
 
@@ -96,7 +95,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="title">Title</label>
+            <label htmlFor="title">Company Name</label>
             {formik.touched.title && formik.errors.title && (
               <span className="text-danger">{formik.errors.title}</span>
             )}
@@ -112,7 +111,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="subtitle">Subtitle</label>
+            <label htmlFor="subtitle">Field</label>
             {formik.touched.subtitle && formik.errors.subtitle && (
               <span className="text-danger">{formik.errors.subtitle}</span>
             )}
@@ -128,7 +127,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onBlur={formik.handleBlur}
               style={{ height: "100px" }}
             />
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Company Description</label>
             {formik.touched.description && formik.errors.description && (
               <span className="text-danger">{formik.errors.description}</span>
             )}
@@ -139,7 +138,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               type="text"
               className="form-control"
               id="phone"
-              placeholder="050-0000000"
+              placeholder="05________"
               value={formik.values.phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -171,12 +170,12 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               type="url"
               className="form-control"
               id="web"
-              placeholder="https://www.example.com"
+              placeholder="https://www.siteName.com"
               value={formik.values.web}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="web">Website</label>
+            <label htmlFor="web">Website URL</label>
             {formik.touched.web && formik.errors.web && (
               <span className="text-danger">{formik.errors.web}</span>
             )}
@@ -242,7 +241,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   type="text"
                   className="form-control"
                   id="address.city"
-                  placeholder="Tel Aviv"
+                  placeholder="City"
                   value={formik.values.address.city}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -344,7 +343,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
             type="submit"
             disabled={!formik.dirty || !formik.isValid}
           >
-            Update Card
+            UPDATE
           </button>
         </form>
       </div>
