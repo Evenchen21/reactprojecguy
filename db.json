@@ -12,7 +12,8 @@
         "street": "Main St",
         "houseNumber": "123",
         "zipCode": "12345"
-      }
+      },
+      "id": "9469"
     },
     {
       "firstName": "Guy",
@@ -26,7 +27,8 @@
         "street": "Second St main",
         "houseNumber": "456",
         "zipCode": "67890"
-      }
+      },
+      "id": "3c20"
     },
     {
       "firstName": "Jane",
@@ -34,64 +36,36 @@
       "email": "jane@gmail.com",
       "password": "jane12345678",
       "phone": "987-654-3210",
-      "isBusiness": false,
+      "isBusiness": true,
       "isAdmin": false,
       "address": {
         "street": "Third St",
         "houseNumber": "789",
         "zipCode": "54321"
-      }
-    }
-  ],
-  "products": [
-    {
-      "name": "Microsoft Earphones",
-      "price": 200,
-      "category": "Earphones & Headphones",
-      "description": "The Microsoft new earphones with high quality",
-      "image": "https://rukminim1.flixcart.com/image/416/416/k0flmkw0/headphone/u/2/h/queer-original-nokia-microsoft-wh-108-wired-headset-black-original-imafk8c6pjy2rhax.jpeg?q=70",
-      "id": "1",
-      "quantity": 10
-    },
-    {
-      "name": "Microsoft Headphones",
-      "price": 200,
-      "category": "Earphones & Headphones",
-      "description": "The Microsoft new earphones with high quality",
-      "image": "https://m.media-amazon.com/images/I/712lRY36XYS.jpg",
-      "id": "2",
-      "quantity": 12
-    },
-    {
-      "name": "Asus Vivobook",
-      "price": 3600,
-      "category": "Laptops",
-      "description": "Wondeful laptops",
-      "image": "https://www.asus.com/media/Odin/Websites/global/Series/12.png",
-      "id": "3",
-      "quantity": 2
+      },
+      "id": "cd85"
     }
   ],
   "cards": [
     {
       "id": "4576033",
-      "title": "first card",
-      "subtitle": "this is the first card",
-      "description": "this is the first card",
-      "phone": "050-0000000",
-      "email": "first@card.com",
-      "web": "https://www.firstcard.com",
+      "title": "Dell Technologies",
+      "subtitle": "Computers, Monitors & Technology Solutions",
+      "description": "1 Dell Way, Round Rock, TX 78682",
+      "phone": "006374432",
+      "email": "NoEmail@dell.com",
+      "web": "https://www.dell.com/en-uk",
       "image": {
-        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-        "alt": "Business chart"
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAMmGS2QqOuFAD_A_Je2y3JRoWaE-K9WWgCw&s",
+        "alt": "Business Dell logo"
       },
       "address": {
-        "state": "",
-        "country": "Israel",
-        "city": "Tel Aviv",
-        "street": "test",
-        "houseNumber": "3",
-        "zip": "12345"
+        "state": "TX",
+        "country": "USA",
+        "city": "Texas",
+        "street": "Dell Way",
+        "houseNumber": "1",
+        "zip": "78682"
       },
       "bizNumber": "4576033",
       "likes": [],
@@ -126,7 +100,7 @@
       "title": "third card",
       "subtitle": "this is the third card",
       "description": "this is the third card",
-      "phone": "050-0000000",
+      "phone": "050-0000001",
       "email": "third@card.com",
       "web": "https://www.thirdcard.com",
       "image": {

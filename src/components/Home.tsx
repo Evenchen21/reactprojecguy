@@ -3,13 +3,35 @@ import { Card } from "react-bootstrap";
 import NavBar from "./NavBar";
 import CardInterface from "../Interfaces/Card";
 import { getAllCards } from "../Services/CardService";
-import { log } from "console";
+import DeleteCardModal from "./DeleteCardModal";
+import UpdateCardModal from "./UpdateCardModal";
 
-interface HomeProps {}
+interface HomeProps {
+  isLoggedIn?: boolean;
+  isAdmin?: boolean;
+  isBusiness?: boolean;
+  user?: any;
+}
 
 const Home: FunctionComponent<HomeProps> = () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
+  const [selectedCardId, setSelectedCardId] = useState<string>("");
+
+  const fetchCards = () => {
+    getAllCards()
+      .then((res) => {
+        console.log("Cards received:", res.data);
+        setCards(res.data);
+      })
+      .catch((err) => {
+        console.log("Error fetching cards:");
+      });
+  };
 
   useEffect(() => {
     // Checking if user is logged in
@@ -19,14 +41,7 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
 
     console.log("API URL:", process.env.REACT_APP_API);
-    getAllCards()
-      .then((res) => {
-        console.log("Cards received:", res.data);
-        setCards(res.data);
-      })
-      .catch((err) => {
-        console.log("Error fetching cards:");
-      });
+    fetchCards();
   }, []);
 
   return (
@@ -62,32 +77,68 @@ const Home: FunctionComponent<HomeProps> = () => {
                       <strong>Card Number:</strong> {card.bizNumber}
                     </p>
                   </Card.Body>
-                  <Card.Footer className="bg-white border-0 d-flex justify-content-end">
-                    <i
-                      className="fa-solid fa-phone text-muted"
-                      style={{ fontSize: "1.5rem" }}
-                    ></i>
-                    {isLoggedIn ? (
-                      <>
-                        <button style={{ margin: "0 8px" }}>
-                          <i
-                            className="fa-solid fa-heart"
-                            style={{ marginRight: "6px" }}
-                          ></i>{" "}
+                  <Card.Footer className="bg-white border-0 d-flex justify-content-between align-items-center">
+                    <button className="btn btn-link border-0 p-0 text-muted">
+                      <i
+                        className="fa-solid fa-phone"
+                        style={{ fontSize: "1.3rem" }}
+                      ></i>
+                    </button>
+
+                    <div className="d-flex gap-3">
+                      {(isAdmin || user?.isBusiness) && (
+                        <button
+                          className="btn btn-link border-0 p-0 text-muted"
+                          onClick={() => {
+                            setSelectedCardId(card.id || "");
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          <i className="fa-solid fa-trash"></i>
                         </button>
-                      </>
-                    ) : (
-                      <> </>
-                    )}
+                      )}
+
+                      {(isAdmin || user?.isBusiness) && (
+                        <button
+                          className="btn btn-link border-0 p-0 text-muted"
+                          onClick={() => {
+                            setSelectedCardId(card.id || "");
+                            setShowUpdateModal(true);
+                          }}
+                        >
+                          <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
+                      )}
+
+                      {(isLoggedIn || user?.isBusiness) && (
+                        <button className="btn btn-link border-0 p-0 text-muted">
+                          <i className="fa-solid fa-heart"></i>
+                        </button>
+                      )}
+                    </div>
                   </Card.Footer>
                 </Card>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-center">-- No cards available---</p>
+          <p className="text-center">-- No cards available! ---</p>
         )}
       </div>
+
+      {/* Modals */}
+      <DeleteCardModal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        cardId={selectedCardId}
+        refresh={fetchCards}
+      />
+      <UpdateCardModal
+        show={showUpdateModal}
+        onHide={() => setShowUpdateModal(false)}
+        cardId={selectedCardId}
+        refresh={fetchCards}
+      />
     </>
   );
 };
