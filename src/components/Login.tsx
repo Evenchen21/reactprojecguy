@@ -28,20 +28,35 @@ const Login: FunctionComponent<LoginProps> = () => {
     onSubmit: async (values) => {
       try {
         const response = await checkUser(values);
-        if (response.data.length) {
-          sessionStorage.setItem(
-            "userDetails",
-            JSON.stringify(response.data[0])
+        // The API returns a token in response.data (string token)
+        if (response.data) {
+          // Store the JWT token
+          sessionStorage.setItem("token", response.data);
+
+          // Decode and store user details
+          const base64Url = response.data.split(".")[1];
+          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+          const jsonPayload = decodeURIComponent(
+            atob(base64)
+              .split("")
+              .map(function (c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+              })
+              .join("")
           );
-          sessionStorage.setItem("token", response.data[0].id);
+          const userDetails = JSON.parse(jsonPayload);
+          sessionStorage.setItem("userDetails", JSON.stringify(userDetails));
+          sessionStorage.setItem("userId", userDetails._id);
+
           toast.success("Login successful");
           navigate("/home");
         } else {
           toast.error("Invalid Details");
         }
-      } catch (error) {
-        console.error("There was an ERROR: ", error);
-        toast.error("Login failed");
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data || error.message || "Login failed";
+        toast.error(errorMessage);
       }
     },
   });

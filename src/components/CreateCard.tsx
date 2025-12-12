@@ -62,13 +62,14 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
       addCard(values)
         .then(() => {
           toast.success("Card created successfully!");
-          onHide();
-          refresh();
           formik.resetForm();
+          refresh();
+          onHide();
         })
         .catch((err) => {
-          toast.error("Failed to create card");
-          console.error(err);
+          const errorMessage =
+            err.response?.data || err.message || "Failed to create card";
+          toast.error(errorMessage);
         });
     },
   });
@@ -355,7 +356,7 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
             type="submit"
             disabled={!formik.dirty || !formik.isValid}
           >
-            SUBMIT
+            Add Card
           </button>
         </form>
       </div>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosConfig";
 import Product from "../Interfaces/Product";
 
 const api: string = process.env.REACT_APP_API_CARTS || "";
@@ -31,7 +31,9 @@ export function addToCard(product: Product) {
         });
       }
     })
-    .catch((err: any) => console.log(err));
+    .catch((err: any) => {
+      // Error adding to card
+    });
 }
 
 export function getUserCard() {
@@ -53,7 +55,9 @@ export function removeFromCard(productId: string) {
         });
       }
     })
-    .catch((err: any) => console.log(err));
+    .catch((err: any) => {
+      // Error removing from card
+    });
 }
 
 export function clearCard() {
@@ -67,5 +71,7 @@ export function clearCard() {
         });
       }
     })
-    .catch((err: any) => console.log(err));
+    .catch((err: any) => {
+      // Error clearing card
+    });
 }

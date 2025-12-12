@@ -22,7 +22,9 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
     if (userId) {
       getUserById()
         .then((res) => setUser(res.data))
-        .catch((err) => console.log("Error"));
+        .catch((err) => {
+          // Error fetching user
+        });
     }
   }, []);
 
@@ -64,7 +66,12 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
                 <>
                   <button style={{ margin: "0 8px" }}>Fav Cards</button>
                   <button style={{ margin: "0 8px" }}>My Cards</button>
-                  <button style={{ margin: "0 8px" }}>Admin Sandbox</button>
+                  <button
+                    style={{ margin: "0 8px" }}
+                    onClick={() => navigate("/users")}
+                  >
+                    Admin Sandbox
+                  </button>
                 </>
               ) : (
                 <> </>
@@ -107,7 +114,6 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {isLoggedIn ? (
                 // logout the user and remove the session storage //
                 <>
-                  <i className="fa-solid fa-user"></i>
                   <button
                     style={{ margin: "0 8px" }}
                     onClick={() => {

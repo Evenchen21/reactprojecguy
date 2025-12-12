@@ -20,7 +20,6 @@ const DeleteCard: FunctionComponent<DeleteCardProps> = ({
         alert("Card deleted successfully!");
       })
       .catch((err) => {
-        console.log(err);
         alert("Error deleting card");
       });
   };

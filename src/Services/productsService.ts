@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosConfig";
 import Product from "../Interfaces/Product";
 
 const api: string = process.env.REACT_APP_API_PRODUCTS || "";

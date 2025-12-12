@@ -1,21 +1,25 @@
 export default interface User {
-  name?: string;
-  id?: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+  _id?: string;
+  name: {
+    first: string;
+    middle?: string;
+    last: string;
+  };
+  phone: string;
   email: string;
-  phoneNumber: string;
-  password: string;
-  imageLink: string;
-  imageDescription: string;
-  country: string;
-  state: string;
-  city: string;
-  street: string;
-  houseNumber: string;
-  zipCode: string;
-  // Login related fields //
-  isAdmin?: boolean;
+  password?: string;
+  image?: {
+    url?: string;
+    alt?: string;
+  };
+  address?: {
+    state?: string;
+    country?: string;
+    city?: string;
+    street?: string;
+    houseNumber?: number;
+    zip?: number;
+  };
   isBusiness?: boolean;
+  isAdmin?: boolean;
 }

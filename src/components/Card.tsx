@@ -14,7 +14,9 @@ const Cart: FunctionComponent<CardProps> = () => {
       .then((res) => {
         setProductsInCard(res.data[0].products);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // Error fetching card
+      });
   }, []);
 
   return (

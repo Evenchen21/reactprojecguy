@@ -18,7 +18,8 @@ const Home: FunctionComponent<HomeProps> = () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isBusiness, setIsBusiness] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -27,21 +28,32 @@ const Home: FunctionComponent<HomeProps> = () => {
   const fetchCards = () => {
     getAllCards()
       .then((res) => {
-        console.log("Cards received:", res.data);
-        console.log("Number of cards:", res.data.length);
-        setCards(res.data);
+        const normalized = res.data.map((c: any) => ({
+          ...c,
+          id: c.id || c._id,
+        }));
+        setCards(normalized);
       })
       .catch((err) => {
-        console.error("Error fetching cards:", err);
-        console.error("Error details:", err.response?.data || err.message);
+        // Error fetching cards
       });
   };
 
   useEffect(() => {
-    // Checking if user is logged in
+    // Checking if user is logged in and get user details
     const userId = sessionStorage.getItem("userId");
-    if (userId) {
+    const userDetailsStr = sessionStorage.getItem("userDetails");
+
+    if (userId && userDetailsStr) {
       setIsLoggedIn(true);
+      try {
+        const userDetails = JSON.parse(userDetailsStr);
+        setUser(userDetails);
+        setIsAdmin(userDetails.isAdmin || false);
+        setIsBusiness(userDetails.isBusiness || false);
+      } catch (error) {
+        <></>;
+      }
     }
     fetchCards();
   }, []);
@@ -49,32 +61,25 @@ const Home: FunctionComponent<HomeProps> = () => {
   return (
     <>
       <NavBar />
-
+      {/* add Create Card Button */}
       <div className="container">
-        <div className="d-flex justify-content-start mt-3 ms-1">
-          <button
-            className="btn btn-dark btn-lg"
-            onClick={() => setShowCreateModal(true)}
-          >
-            <i className="fa-solid fa-circle-plus"></i>
-          </button>
-        </div>
-      </div>
-      <div className="container">
-        {/* Add Card Button - Top Right Corner */}
-        {(isLoggedIn || user?.isBusiness) && (
-          <div className="d-flex justify-content-end mt-3 mb-3">
-            <button className="btn btn-primary btn-lg me-3">
+        {(isBusiness || isAdmin) && (
+          <div className="d-flex justify-content-end mt-3 ms-1">
+            <button
+              className="btn btn-dark btn-lg"
+              onClick={() => setShowCreateModal(true)}
+            >
               <i className="fa-solid fa-circle-plus me-2"></i>
               Add Card
             </button>
           </div>
         )}
+
         <h4 className="display-4 text-center my-4">Business Cards</h4>
         {cards.length ? (
           <div className="row">
             {cards.map((card: CardInterface) => (
-              <div className="col-md-4 mb-4" key={card.id}>
+              <div className="col-md-4 mb-4" key={card.id || (card as any)._id}>
                 <Card className="h-100 shadow">
                   <Card.Img
                     variant="top"
@@ -109,12 +114,14 @@ const Home: FunctionComponent<HomeProps> = () => {
                     </button>
 
                     <div className="d-flex gap-3">
-                      {(isAdmin || user?.isBusiness) && (
+                      {(isAdmin || isBusiness) && (
                         <>
                           <button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
-                              setSelectedCardId(card.id || "");
+                              setSelectedCardId(
+                                card.id || (card as any)._id || ""
+                              );
                               setShowDeleteModal(true);
                             }}
                           >
@@ -124,7 +131,9 @@ const Home: FunctionComponent<HomeProps> = () => {
                           <button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
-                              setSelectedCardId(card.id || "");
+                              setSelectedCardId(
+                                card.id || (card as any)._id || ""
+                              );
                               setShowUpdateModal(true);
                             }}
                           >
@@ -133,7 +142,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                         </>
                       )}
 
-                      {(isLoggedIn || user?.isBusiness) && (
+                      {isLoggedIn && (
                         <button className="btn btn-link border-0 p-0 text-muted">
                           <i className="fa-solid fa-heart"></i>
                         </button>

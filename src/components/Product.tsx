@@ -13,7 +13,9 @@ const Products: FunctionComponent<ProductsProps> = () => {
       .then((res: { data: SetStateAction<Product[]> }) => {
         setProducts(res.data);
       })
-      .catch((err: any) => console.log(err));
+      .catch((err: any) => {
+        // Error fetching products
+      });
   }, []);
 
   return (
@@ -49,7 +51,9 @@ const Products: FunctionComponent<ProductsProps> = () => {
                         .then(() => {
                           alert("Product was added to card successfully!");
                         })
-                        .catch((err: any) => console.log(err));
+                        .catch((err: any) => {
+                          // Error adding to card
+                        });
                     }}
                   >
                     <i className="fa-solid fa-cart-shopping"></i> Add to Card

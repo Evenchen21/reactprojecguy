@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../Services/UserService";
+import { toast } from "react-toastify";
 
 interface RegisterProps {}
 
@@ -60,18 +61,40 @@ const Register: FunctionComponent<RegisterProps> = () => {
         .matches(/^[0-9]{5}$/, "Zip code must be 5 digits")
         .required("Zip code is required"),
     }),
-    onSubmit: (values) => {
-      const userData = {
-        ...values,
-        name: `${values.firstName} ${values.middleName} ${values.lastName}`.trim(),
-        isAdmin: false,
-      };
-      addUser(userData)
-        .then((res) => {
-          navigate("/home");
-          sessionStorage.setItem("userId", res.data.id);
-        })
-        .catch((err) => console.log(err));
+    onSubmit: async (values) => {
+      try {
+        const userData = {
+          name: {
+            first: values.firstName,
+            middle: values.middleName,
+            last: values.lastName,
+          },
+          phone: values.phoneNumber,
+          email: values.email,
+          password: values.password,
+          image: {
+            url: values.imageLink || "https://via.placeholder.com/150",
+            alt: values.imageDescription || "User image",
+          },
+          address: {
+            state: values.state,
+            country: values.country,
+            city: values.city,
+            street: values.street,
+            houseNumber: Number(values.houseNumber),
+            zip: Number(values.zipCode),
+          },
+          isBusiness: values.isBusiness,
+        };
+
+        const response = await addUser(userData);
+        toast.success("Registration successful! Signing in..");
+        navigate("/home");
+      } catch (err: any) {
+        const errorMessage =
+          err.response?.data || err.message || "Registration failed";
+        toast.error(errorMessage);
+      }
     },
   });
 
