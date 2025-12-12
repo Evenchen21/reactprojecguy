@@ -1,18 +1,18 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import Product from "../Interfaces/Product";
-import { getUserCart } from "../Services/cartsService";
+import { getUserCard } from "../Services/cartsService";
 import { Card } from "react-bootstrap";
 import NavBar from "./NavBar";
 
 interface CardProps {}
 
 const Cart: FunctionComponent<CardProps> = () => {
-  const [productsInCart, setProductsInCart] = useState<Product[]>([]);
+  const [productsInCard, setProductsInCard] = useState<Product[]>([]);
 
   useEffect(() => {
-    getUserCart()
+    getUserCard()
       .then((res) => {
-        setProductsInCart(res.data[0].products);
+        setProductsInCard(res.data[0].products);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -21,10 +21,10 @@ const Cart: FunctionComponent<CardProps> = () => {
     <>
       <NavBar />
       <div className="container">
-        <h4 className="display-4 text-center my-4">CART</h4>
-        {productsInCart.length ? (
+        <h4 className="display-4 text-center my-4">CARD</h4>
+        {productsInCard.length ? (
           <div className="row">
-            {productsInCart.map((product: Product) => (
+            {productsInCard.map((product: Product) => (
               <div className="col-md-4 mb-4" key={product.id}>
                 <Card className="h-100 shadow">
                   <Card.Img

@@ -1,9 +1,9 @@
 import axios from "axios";
 import Product from "../Interfaces/Product";
 
-const api: string = process.env.REACT_APP_API + "/carts";
+const api: string = process.env.REACT_APP_API_CARTS || "";
 
-export function createCart(userId: string) {
+export function createCard(userId: string) {
   return axios.post(api, {
     userId: userId,
     products: [],
@@ -11,16 +11,16 @@ export function createCart(userId: string) {
   });
 }
 
-export function addToCart(product: Product) {
+export function addToCard(product: Product) {
   const userId = sessionStorage.getItem("userId");
-  return getUserCart()
+  return getUserCard()
     .then((res: any) => {
       if (res.data.length) {
-        const cart = res.data[0];
-        const products = cart.products || [];
+        const card = res.data[0];
+        const products = card.products || [];
         products.push(product);
-        return axios.put(`${api}/${cart.id}`, {
-          ...cart,
+        return axios.put(`${api}/${card.id}`, {
+          ...card,
           products: products,
         });
       } else {
@@ -34,21 +34,21 @@ export function addToCart(product: Product) {
     .catch((err: any) => console.log(err));
 }
 
-export function getUserCart() {
+export function getUserCard() {
   const userId = sessionStorage.getItem("userId");
   return axios.get(`${api}?userId=${userId}`);
 }
 
-export function removeFromCart(productId: string) {
-  return getUserCart()
+export function removeFromCard(productId: string) {
+  return getUserCard()
     .then((res: any) => {
       if (res.data.length) {
-        const cart = res.data[0];
-        const products = cart.products.filter(
+        const card = res.data[0];
+        const products = card.products.filter(
           (p: Product) => p.id !== productId
         );
-        return axios.put(`${api}/${cart.id}`, {
-          ...cart,
+        return axios.put(`${api}/${card.id}`, {
+          ...card,
           products: products,
         });
       }
@@ -56,13 +56,13 @@ export function removeFromCart(productId: string) {
     .catch((err: any) => console.log(err));
 }
 
-export function clearCart() {
-  return getUserCart()
+export function clearCard() {
+  return getUserCard()
     .then((res: any) => {
       if (res.data.length) {
-        const cart = res.data[0];
-        return axios.put(`${api}/${cart.id}`, {
-          ...cart,
+        const card = res.data[0];
+        return axios.put(`${api}/${card.id}`, {
+          ...card,
           products: [],
         });
       }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api: string = process.env.REACT_APP_API + "/cards";
+const api: string = process.env.REACT_APP_API_CARDS || "";
 
 export function getCardById(cardId: string) {
   return axios.get(`${api}/${cardId}`);

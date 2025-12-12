@@ -1,7 +1,7 @@
 import axios from "axios";
 import User from "../Interfaces/User";
 
-const api: string = process.env.REACT_APP_API + "/users";
+const api: string = process.env.REACT_APP_API_USERS || "";
 
 // login
 export function checkUser(credentials: { email: string; password: string }) {

@@ -19,7 +19,7 @@
       "firstName": "Guy",
       "lastName": "Even-Chen",
       "email": "admin@gmail.com",
-      "password": "administrator",
+      "password": "Abc!123Abc",
       "phone": "0501234678",
       "isBusiness": false,
       "isAdmin": true,
@@ -119,5 +119,7 @@
       "likes": [],
       "userId": "1"
     }
-  ]
+  ],
+  "products": [],
+  "carts": []
 }

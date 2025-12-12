@@ -5,6 +5,7 @@ import CardInterface from "../Interfaces/Card";
 import { getAllCards } from "../Services/CardService";
 import DeleteCardModal from "./DeleteCardModal";
 import UpdateCardModal from "./UpdateCardModal";
+import CreateCardModal from "./CreateCardModal";
 
 interface HomeProps {
   isLoggedIn?: boolean;
@@ -20,16 +21,19 @@ const Home: FunctionComponent<HomeProps> = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [selectedCardId, setSelectedCardId] = useState<string>("");
 
   const fetchCards = () => {
     getAllCards()
       .then((res) => {
         console.log("Cards received:", res.data);
+        console.log("Number of cards:", res.data.length);
         setCards(res.data);
       })
       .catch((err) => {
-        console.log("Error fetching cards:");
+        console.error("Error fetching cards:", err);
+        console.error("Error details:", err.response?.data || err.message);
       });
   };
 
@@ -39,15 +43,33 @@ const Home: FunctionComponent<HomeProps> = () => {
     if (userId) {
       setIsLoggedIn(true);
     }
-
-    console.log("API URL:", process.env.REACT_APP_API);
     fetchCards();
   }, []);
 
   return (
     <>
       <NavBar />
+
       <div className="container">
+        <div className="d-flex justify-content-start mt-3 ms-1">
+          <button
+            className="btn btn-dark btn-lg"
+            onClick={() => setShowCreateModal(true)}
+          >
+            <i className="fa-solid fa-circle-plus"></i>
+          </button>
+        </div>
+      </div>
+      <div className="container">
+        {/* Add Card Button - Top Right Corner */}
+        {(isLoggedIn || user?.isBusiness) && (
+          <div className="d-flex justify-content-end mt-3 mb-3">
+            <button className="btn btn-primary btn-lg me-3">
+              <i className="fa-solid fa-circle-plus me-2"></i>
+              Add Card
+            </button>
+          </div>
+        )}
         <h4 className="display-4 text-center my-4">Business Cards</h4>
         {cards.length ? (
           <div className="row">
@@ -121,19 +143,18 @@ const Home: FunctionComponent<HomeProps> = () => {
                 </Card>
               </div>
             ))}
-            {/* Add Card Button */}
-            {(isLoggedIn || user?.isBusiness) && (
-              <button className="btn btn-link border-0 p-0 text-muted">
-                <i className="fa-solid fa-circle-plus"></i>
-              </button>
-            )}
           </div>
         ) : (
-          <>?</>
+          <> NO CARDS </>
         )}
       </div>
 
       {/* Modals */}
+      <CreateCardModal
+        show={showCreateModal}
+        onHide={() => setShowCreateModal(false)}
+        refresh={fetchCards}
+      />
       <DeleteCardModal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}

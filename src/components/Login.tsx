@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { checkUser } from "../Services/UserService";
+import { toast } from "react-toastify";
 
 interface LoginProps {}
 
@@ -24,19 +25,24 @@ const Login: FunctionComponent<LoginProps> = () => {
         .min(8, "Password must be at least 8 characters")
         .required("Required"),
     }),
-    onSubmit: (values) => {
-      checkUser(values)
-        .then((response) => {
-          if (response.data.length) {
-            navigate("/home");
-            sessionStorage.setItem("userId", response.data[0].id);
-          } else {
-            alert("Invalid Details");
-          }
-        })
-        .catch((error) => {
-          console.error("There was an ERROR: ", error);
-        });
+    onSubmit: async (values) => {
+      try {
+        const response = await checkUser(values);
+        if (response.data.length) {
+          sessionStorage.setItem(
+            "userDetails",
+            JSON.stringify(response.data[0])
+          );
+          sessionStorage.setItem("token", response.data[0].id);
+          toast.success("Login successful");
+          navigate("/home");
+        } else {
+          toast.error("Invalid Details");
+        }
+      } catch (error) {
+        console.error("There was an ERROR: ", error);
+        toast.error("Login failed");
+      }
     },
   });
   return (

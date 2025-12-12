@@ -1,7 +1,7 @@
 import axios from "axios";
 import Product from "../Interfaces/Product";
 
-const api: string = process.env.REACT_APP_API + "/products";
+const api: string = process.env.REACT_APP_API_PRODUCTS || "";
 
 export function getAllProducts() {
   return axios.get(api);

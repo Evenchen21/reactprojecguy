@@ -1,56 +1,43 @@
 import { useFormik } from "formik";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import * as yup from "yup";
 import CardInterface from "../Interfaces/Card";
-import { getCardById, updateCard } from "../Services/CardService";
+import { addCard } from "../Services/CardService";
+import { toast } from "react-toastify";
 
-interface UpdateCardProps {
+interface CreateCardProps {
   onHide: Function;
-  cardId: string;
   refresh: Function;
 }
 
-const UpdateCard: FunctionComponent<UpdateCardProps> = ({
+const CreateCard: FunctionComponent<CreateCardProps> = ({
   onHide,
-  cardId,
   refresh,
 }) => {
-  const [card, setCard] = useState<CardInterface>({
-    id: "",
-    title: "",
-    subtitle: "",
-    description: "",
-    phone: "",
-    email: "",
-    web: "",
-    image: {
-      url: "",
-      alt: "",
-    },
-    address: {
-      state: "",
-      country: "",
-      city: "",
-      street: "",
-      houseNumber: "",
-      zip: "",
-    },
-    bizNumber: "",
-    likes: [],
-    userId: "",
-  });
-
-  useEffect(() => {
-    getCardById(cardId)
-      .then((res) => {
-        setCard(res.data);
-      })
-      .catch((err) => <>ERROR Fetching Card</>);
-  }, [cardId]);
-
   const formik = useFormik({
-    initialValues: card,
-    enableReinitialize: true,
+    initialValues: {
+      title: "",
+      subtitle: "",
+      description: "",
+      phone: "",
+      email: "",
+      web: "",
+      image: {
+        url: "",
+        alt: "",
+      },
+      address: {
+        state: "",
+        country: "",
+        city: "",
+        street: "",
+        houseNumber: "",
+        zip: "",
+      },
+      bizNumber: "",
+      likes: [],
+      userId: sessionStorage.getItem("userId") || "",
+    },
     validationSchema: yup.object({
       title: yup.string().required().min(2),
       subtitle: yup.string().required().min(2),
@@ -72,12 +59,17 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
       }),
     }),
     onSubmit: (values) => {
-      updateCard(cardId, values)
+      addCard(values)
         .then(() => {
+          toast.success("Card created successfully!");
           onHide();
           refresh();
+          formik.resetForm();
         })
-        .catch((err) => <></>);
+        .catch((err) => {
+          toast.error("Failed to create card");
+          console.error(err);
+        });
     },
   });
 
@@ -95,7 +87,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="title">Company Name</label>
+            <label htmlFor="title">Company Name *</label>
             {formik.touched.title && formik.errors.title && (
               <span className="text-danger">{formik.errors.title}</span>
             )}
@@ -111,7 +103,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="subtitle">Field</label>
+            <label htmlFor="subtitle">Field *</label>
             {formik.touched.subtitle && formik.errors.subtitle && (
               <span className="text-danger">{formik.errors.subtitle}</span>
             )}
@@ -127,7 +119,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onBlur={formik.handleBlur}
               style={{ height: "100px" }}
             />
-            <label htmlFor="description">Company Description</label>
+            <label htmlFor="description">Company Description *</label>
             {formik.touched.description && formik.errors.description && (
               <span className="text-danger">{formik.errors.description}</span>
             )}
@@ -143,7 +135,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="phone">Phone</label>
+            <label htmlFor="phone">Phone *</label>
             {formik.touched.phone && formik.errors.phone && (
               <span className="text-danger">{formik.errors.phone}</span>
             )}
@@ -159,7 +151,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Email *</label>
             {formik.touched.email && formik.errors.email && (
               <span className="text-danger">{formik.errors.email}</span>
             )}
@@ -191,7 +183,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="image.url">Image URL</label>
+            <label htmlFor="image.url">Image URL *</label>
             {formik.touched.image?.url && formik.errors.image?.url && (
               <span className="text-danger">{formik.errors.image.url}</span>
             )}
@@ -207,7 +199,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <label htmlFor="image.alt">Image Alt Text</label>
+            <label htmlFor="image.alt">Image Alt Text *</label>
             {formik.touched.image?.alt && formik.errors.image?.alt && (
               <span className="text-danger">{formik.errors.image.alt}</span>
             )}
@@ -225,7 +217,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <label htmlFor="address.country">Country</label>
+                <label htmlFor="address.country">Country *</label>
                 {formik.touched.address?.country &&
                   formik.errors.address?.country && (
                     <span className="text-danger">
@@ -246,7 +238,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <label htmlFor="address.city">City</label>
+                <label htmlFor="address.city">City *</label>
                 {formik.touched.address?.city &&
                   formik.errors.address?.city && (
                     <span className="text-danger">
@@ -269,7 +261,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <label htmlFor="address.street">Street</label>
+                <label htmlFor="address.street">Street *</label>
                 {formik.touched.address?.street &&
                   formik.errors.address?.street && (
                     <span className="text-danger">
@@ -290,7 +282,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <label htmlFor="address.houseNumber">House Number</label>
+                <label htmlFor="address.houseNumber">House Number *</label>
                 {formik.touched.address?.houseNumber &&
                   formik.errors.address?.houseNumber && (
                     <span className="text-danger">
@@ -313,7 +305,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <label htmlFor="address.zip">Zip Code</label>
+                <label htmlFor="address.zip">Zip Code *</label>
                 {formik.touched.address?.zip && formik.errors.address?.zip && (
                   <span className="text-danger">
                     {formik.errors.address.zip}
@@ -338,12 +330,32 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
             </div>
           </div>
 
+          <div className="d-flex gap-2">
+            <button
+              className="btn btn-outline-danger flex-fill"
+              type="button"
+              onClick={() => {
+                formik.resetForm();
+                onHide();
+              }}
+            >
+              CANCEL
+            </button>
+            <button
+              className="btn btn-outline-secondary flex-fill"
+              type="button"
+              onClick={() => formik.resetForm()}
+            >
+              <i className="fa-solid fa-arrows-rotate"></i>
+            </button>
+          </div>
+
           <button
-            className="btn btn-warning w-100"
+            className="btn btn-success w-100 mt-3"
             type="submit"
             disabled={!formik.dirty || !formik.isValid}
           >
-            UPDATE
+            SUBMIT
           </button>
         </form>
       </div>
@@ -351,4 +363,4 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
   );
 };
 
-export default UpdateCard;
+export default CreateCard;

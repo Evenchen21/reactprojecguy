@@ -1,7 +1,7 @@
 import { FunctionComponent, SetStateAction, useEffect, useState } from "react";
 import { getAllProducts } from "../Services/productsService";
 import Product from "../Interfaces/Product";
-import { addToCart } from "../Services/cartsService";
+import { addToCard } from "../Services/cartsService";
 
 interface ProductsProps {}
 
@@ -45,14 +45,14 @@ const Products: FunctionComponent<ProductsProps> = () => {
                     className="btn btn-primary"
                     disabled={!product.quantity}
                     onClick={() => {
-                      addToCart(product)
+                      addToCard(product)
                         .then(() => {
-                          alert("Product was added to cart successfully!");
+                          alert("Product was added to card successfully!");
                         })
                         .catch((err: any) => console.log(err));
                     }}
                   >
-                    <i className="fa-solid fa-cart-shopping"></i> Add to Cart
+                    <i className="fa-solid fa-cart-shopping"></i> Add to Card
                   </button>
                 </div>
               </div>
