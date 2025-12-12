@@ -20,5 +20,6 @@ export default interface Card {
   };
   bizNumber: string;
   likes?: string[];
+  isLikedCards?: boolean;
   userId: string;
 }

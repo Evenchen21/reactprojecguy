@@ -6,29 +6,24 @@ const axiosInstance = axios.create();
 // Add a request interceptor to attach the token to all requests
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Get token from sessionStorage or use the hardcoded token
     const token =
       sessionStorage.getItem("token") ||
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTBhZTc1OWRiMzgxM2E2NTAyZmMyZmMiLCJpc0J1c2luZXNzIjp0cnVlLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2OTg4NDI5NTJ9.En62ry5Gu9FMBAvxyltv0eRYhpJIJs_aW06QAtxXRck";
 
     if (token) {
+      config.headers = config.headers || {};
       config.headers["x-auth-token"] = token;
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Add a response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Handle errors silently or with toast notifications
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default axiosInstance;

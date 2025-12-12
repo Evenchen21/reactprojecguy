@@ -1,21 +1,21 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Product from "../Interfaces/Product";
-import { getUserCard } from "../Services/cartsService";
+import CardInterface from "../Interfaces/Card";
+import { getAllCards } from "../Services/CardService";
 import { Card } from "react-bootstrap";
 import NavBar from "./NavBar";
 
 interface CardProps {}
 
 const Cart: FunctionComponent<CardProps> = () => {
-  const [productsInCard, setProductsInCard] = useState<Product[]>([]);
+  const [cards, setCards] = useState<CardInterface[]>([]);
 
   useEffect(() => {
-    getUserCard()
-      .then((res) => {
-        setProductsInCard(res.data[0].products);
+    getAllCards()
+      .then((res: any) => {
+        setCards(res.data || []);
       })
-      .catch((err) => {
-        // Error fetching card
+      .catch((err: any) => {
+        // Error fetching cards
       });
   }, []);
 
@@ -24,31 +24,32 @@ const Cart: FunctionComponent<CardProps> = () => {
       <NavBar />
       <div className="container">
         <h4 className="display-4 text-center my-4">CARD</h4>
-        {productsInCard.length ? (
+        {cards.length ? (
           <div className="row">
-            {productsInCard.map((product: Product) => (
-              <div className="col-md-4 mb-4" key={product.id}>
+            {cards.map((cardItem: CardInterface) => (
+              <div className="col-md-4 mb-4" key={cardItem.id}>
                 <Card className="h-100 shadow">
                   <Card.Img
                     variant="top"
-                    src={product.image}
-                    alt={product.name}
+                    src={cardItem.image.url}
+                    alt={cardItem.image.alt}
                     style={{ height: "200px", objectFit: "cover" }}
                   />
                   <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Title>{cardItem.title}</Card.Title>
                     <Card.Text className="text-muted">
-                      {product.description}
+                      {cardItem.subtitle}
                     </Card.Text>
                     <hr />
                     <p className="mb-1">
-                      <strong>Phone:</strong> 050-0000000
+                      <strong>Phone:</strong> {cardItem.phone}
                     </p>
                     <p className="mb-1">
-                      <strong>Address:</strong> test 3 test
+                      <strong>Address:</strong> {cardItem.address.street}{" "}
+                      {cardItem.address.houseNumber}
                     </p>
                     <p className="mb-1">
-                      <strong>Card Number:</strong> {product.id}
+                      <strong>Card Number:</strong> {cardItem.bizNumber}
                     </p>
                   </Card.Body>
                   <Card.Footer className="bg-white border-0 d-flex justify-content-end">

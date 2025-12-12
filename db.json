@@ -68,54 +68,281 @@
         "zip": "78682"
       },
       "bizNumber": "4576033",
-      "likes": [],
+      "isLikedCards": false,
       "userId": "1"
     },
     {
       "id": "2308992",
-      "title": "second card",
-      "subtitle": "this is the second card",
-      "description": "this is the second card",
-      "phone": "050-0000000",
-      "email": "second@card.com",
-      "web": "https://www.secondcard.com",
+      "title": "Skyline Builders",
+      "subtitle": "Renovations & smart home upgrades",
+      "description": "Full-service contractor for residential remodels and smart installations.",
+      "phone": "03-7778899",
+      "email": "office@skylinebuilders.co.il",
+      "web": "https://skylinebuilders.example.com",
       "image": {
-        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-        "alt": "Business chart"
+        "url": "https://images.unsplash.com/photo-1503389152951-9f343605f61e?w=800",
+        "alt": "Modern living room"
       },
       "address": {
         "state": "",
         "country": "Israel",
-        "city": "Tel Aviv",
-        "street": "test",
-        "houseNumber": "3",
-        "zip": "12345"
+        "city": "Rishon LeZion",
+        "street": "Moshe Dayan",
+        "houseNumber": "88",
+        "zip": "75200"
       },
       "bizNumber": "2308992",
+      "isLikedCards": false,
       "likes": [],
       "userId": "1"
     },
     {
       "id": "6275908",
-      "title": "third card",
-      "subtitle": "this is the third card",
-      "description": "this is the third card",
-      "phone": "050-0000001",
-      "email": "third@card.com",
-      "web": "https://www.thirdcard.com",
+      "title": "Nova Dental Clinic",
+      "subtitle": "Family dentistry & implants",
+      "description": "Modern clinic offering preventative care, implants, and whitening.",
+      "phone": "054-2223344",
+      "email": "care@novadental.co.il",
+      "web": "https://novadental.example.com",
       "image": {
-        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-        "alt": "Business chart"
+        "url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
+        "alt": "Dental clinic interior"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Netanya",
+        "street": "Sokolov",
+        "houseNumber": "15",
+        "zip": "42200"
+      },
+      "bizNumber": "6275908",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "9152044",
+      "title": "Cafe Liora",
+      "subtitle": "Artisanal coffee & pastries",
+      "description": "Neighborhood cafe serving single-origin espresso and fresh bakes.",
+      "phone": "052-4445566",
+      "email": "hello@cafeli.com",
+      "web": "https://cafeli.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800",
+        "alt": "Coffee and pastries"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Haifa",
+        "street": "Haroshet",
+        "houseNumber": "12",
+        "zip": "34999"
+      },
+      "bizNumber": "9152044",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "7812330",
+      "title": "GreenLeaf Studio",
+      "subtitle": "Landscape design & care",
+      "description": "Boutique landscape studio creating sustainable gardens.",
+      "phone": "03-5557788",
+      "email": "contact@greenleaf.com",
+      "web": "https://greenleaf.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800",
+        "alt": "Green garden"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Ramat Gan",
+        "street": "Hovevei Zion",
+        "houseNumber": "27",
+        "zip": "52521"
+      },
+      "bizNumber": "7812330",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "5044221",
+      "title": "ByteCraft",
+      "subtitle": "Web & mobile development",
+      "description": "Full-stack agency building performant web and mobile apps.",
+      "phone": "050-7771234",
+      "email": "info@bytecraft.dev",
+      "web": "https://bytecraft.dev",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800",
+        "alt": "Developer workspace"
       },
       "address": {
         "state": "",
         "country": "Israel",
         "city": "Tel Aviv",
-        "street": "test",
-        "houseNumber": "3",
-        "zip": "12345"
+        "street": "Rothschild",
+        "houseNumber": "101",
+        "zip": "64000"
       },
-      "bizNumber": "6275908",
+      "bizNumber": "5044221",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "3601189",
+      "title": "FitLab",
+      "subtitle": "Personal training & wellness",
+      "description": "Private gym offering tailored training and nutrition plans.",
+      "phone": "054-9090909",
+      "email": "coach@fitlab.co.il",
+      "web": "https://fitlab.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800",
+        "alt": "Fitness training"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Jerusalem",
+        "street": "King David",
+        "houseNumber": "45",
+        "zip": "94101"
+      },
+      "bizNumber": "3601189",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "1920455",
+      "title": "Artisan Prints",
+      "subtitle": "Custom posters & framing",
+      "description": "Design studio producing bespoke prints and frames.",
+      "phone": "058-3332211",
+      "email": "studio@artisanprints.com",
+      "web": "https://artisanprints.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800",
+        "alt": "Printed artwork"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Beer Sheva",
+        "street": "Herzl",
+        "houseNumber": "7",
+        "zip": "84541"
+      },
+      "bizNumber": "1920455",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "8453110",
+      "title": "Petal & Stem",
+      "subtitle": "Floral design and delivery",
+      "description": "Boutique florist creating seasonal bouquets and event decor.",
+      "phone": "03-6667788",
+      "email": "hello@petalandstem.com",
+      "web": "https://petalandstem.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800",
+        "alt": "Flower arrangement"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Tel Aviv",
+        "street": "Ibn Gabirol",
+        "houseNumber": "142",
+        "zip": "62000"
+      },
+      "bizNumber": "8453110",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "5587204",
+      "title": "BlueWave Travel",
+      "subtitle": "Custom trips & retreats",
+      "description": "Travel agency crafting tailored vacations and corporate retreats.",
+      "phone": "077-9901122",
+      "email": "plan@bluewave.travel",
+      "web": "https://bluewave.travel",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
+        "alt": "Tropical beach"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Herzliya",
+        "street": "HaPalmach",
+        "houseNumber": "19",
+        "zip": "46733"
+      },
+      "bizNumber": "5587204",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "6642099",
+      "title": "BrightMind Tutors",
+      "subtitle": "STEM tutoring for all ages",
+      "description": "Expert tutors offering math, physics, and coding sessions.",
+      "phone": "058-7001122",
+      "email": "support@brightmind.co.il",
+      "web": "https://brightmind.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=800",
+        "alt": "Student studying"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Kfar Saba",
+        "street": "Weizmann",
+        "houseNumber": "3",
+        "zip": "44200"
+      },
+      "bizNumber": "6642099",
+      "isLikedCards": false,
+      "likes": [],
+      "userId": "1"
+    },
+    {
+      "id": "7335188",
+      "title": "CycleHub",
+      "subtitle": "Bike sales & repairs",
+      "description": "Community bike shop offering fittings, repairs, and rentals.",
+      "phone": "02-5556677",
+      "email": "ride@cyclehub.co.il",
+      "web": "https://cyclehub.example.com",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?w=800",
+        "alt": "Bicycle workshop"
+      },
+      "address": {
+        "state": "",
+        "country": "Israel",
+        "city": "Modiin",
+        "street": "HaDekel",
+        "houseNumber": "22",
+        "zip": "71700"
+      },
+      "bizNumber": "7335188",
+      "isLikedCards": false,
       "likes": [],
       "userId": "1"
     }

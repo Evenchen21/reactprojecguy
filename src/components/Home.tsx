@@ -2,10 +2,11 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import NavBar from "./NavBar";
 import CardInterface from "../Interfaces/Card";
-import { getAllCards } from "../Services/CardService";
+import { getAllCards, updateCard } from "../Services/CardService";
 import DeleteCardModal from "./DeleteCardModal";
 import UpdateCardModal from "./UpdateCardModal";
 import CreateCardModal from "./CreateCardModal";
+import { useNavigate } from "react-router-dom";
 
 interface HomeProps {
   isLoggedIn?: boolean;
@@ -15,6 +16,7 @@ interface HomeProps {
 }
 
 const Home: FunctionComponent<HomeProps> = () => {
+  const navigate = useNavigate();
   const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
@@ -28,14 +30,17 @@ const Home: FunctionComponent<HomeProps> = () => {
   const fetchCards = () => {
     getAllCards()
       .then((res) => {
-        const normalized = res.data.map((c: any) => ({
+        const normalized = (res.data || []).map((c: any) => ({
           ...c,
           id: c.id || c._id,
+          likes: c.likes || [],
+          isLikedCards: c.isLikedCards ?? false,
         }));
         setCards(normalized);
       })
       .catch((err) => {
         // Error fetching cards
+        setCards([]);
       });
   };
 
@@ -58,6 +63,39 @@ const Home: FunctionComponent<HomeProps> = () => {
     fetchCards();
   }, []);
 
+  const currentUserId = user?._id || user?.id || user?.userId || "";
+
+  const isCardLiked = (card: CardInterface) => {
+    if (!currentUserId) return false;
+    return (card.likes || []).includes(currentUserId);
+  };
+
+  const toggleFavorite = async (card: CardInterface) => {
+    if (!card.id) return;
+    if (!currentUserId) {
+      return;
+    }
+
+    try {
+      const liked = isCardLiked(card);
+      const nextLikes = liked
+        ? (card.likes || []).filter((id) => id !== currentUserId)
+        : [...(card.likes || []), currentUserId];
+
+      const updatedCard = {
+        ...card,
+        likes: nextLikes,
+        isLikedCards: !liked,
+      };
+
+      await updateCard(card.id, updatedCard);
+
+      setCards((prev) => prev.map((c) => (c.id === card.id ? updatedCard : c)));
+    } catch (error) {
+      // handle error silently for now
+    }
+  };
+
   return (
     <>
       <NavBar />
@@ -79,7 +117,7 @@ const Home: FunctionComponent<HomeProps> = () => {
         {cards.length ? (
           <div className="row">
             {cards.map((card: CardInterface) => (
-              <div className="col-md-4 mb-4" key={card.id || (card as any)._id}>
+              <div className="col-md-4 mb-4" key={card.id || ""}>
                 <Card className="h-100 shadow">
                   <Card.Img
                     variant="top"
@@ -119,21 +157,16 @@ const Home: FunctionComponent<HomeProps> = () => {
                           <button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
-                              setSelectedCardId(
-                                card.id || (card as any)._id || ""
-                              );
+                              setSelectedCardId(card.id || "");
                               setShowDeleteModal(true);
                             }}
                           >
                             <i className="fa-solid fa-trash"></i>
                           </button>
-
                           <button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
-                              setSelectedCardId(
-                                card.id || (card as any)._id || ""
-                              );
+                              setSelectedCardId(card.id || "");
                               setShowUpdateModal(true);
                             }}
                           >
@@ -143,8 +176,15 @@ const Home: FunctionComponent<HomeProps> = () => {
                       )}
 
                       {isLoggedIn && (
-                        <button className="btn btn-link border-0 p-0 text-muted">
-                          <i className="fa-solid fa-heart"></i>
+                        <button
+                          className="btn btn-link border-0 p-0 text-muted"
+                          onClick={() => toggleFavorite(card)}
+                        >
+                          {isCardLiked(card) ? (
+                            <i className="fa-solid fa-heart text-danger"></i>
+                          ) : (
+                            <i className="fa-regular fa-heart"></i>
+                          )}
                         </button>
                       )}
                     </div>
@@ -154,11 +194,11 @@ const Home: FunctionComponent<HomeProps> = () => {
             ))}
           </div>
         ) : (
-          <> NO CARDS </>
+          <> NO_CARDS_IS_AVAILABLE</>
         )}
       </div>
 
-      {/* Modals */}
+      {/* Modals DO NOT TOUCH */}
       <CreateCardModal
         show={showCreateModal}
         onHide={() => setShowCreateModal(false)}
@@ -176,6 +216,40 @@ const Home: FunctionComponent<HomeProps> = () => {
         cardId={selectedCardId}
         refresh={fetchCards}
       />
+
+      {isLoggedIn && (
+        <>
+          {/* Footer navigation */}
+          <footer className="footer-nav">
+            <div className="footer-nav-inner">
+              <button
+                type="button"
+                className="footer-nav-item"
+                onClick={() => navigate("/home#about")}
+              >
+                <i className="fa-solid fa-circle-info" aria-hidden="true"></i>
+                <span>About</span>
+              </button>
+              <button
+                type="button"
+                className="footer-nav-item"
+                onClick={() => navigate("/home")}
+              >
+                <i className="fa-solid fa-heart" aria-hidden="true"></i>
+                <span>Favorites</span>
+              </button>
+              <button
+                type="button"
+                className="footer-nav-item"
+                onClick={() => navigate("/home")}
+              >
+                <i className="fa-solid fa-id-card" aria-hidden="true"></i>
+                <span>My Cards</span>
+              </button>
+            </div>
+          </footer>
+        </>
+      )}
     </>
   );
 };

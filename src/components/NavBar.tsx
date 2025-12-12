@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FunctionComponent, use, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -14,6 +14,10 @@ interface NarBarProps {}
 
 const NarBar: FunctionComponent<NarBarProps> = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const stored = localStorage.getItem("isDarkMode");
+    return stored === "true";
+  });
 
   const navigate = useNavigate();
 
@@ -28,7 +32,25 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+
+    localStorage.setItem("isDarkMode", String(isDarkMode));
+
+    return () => {
+      document.body.classList.remove("dark-mode");
+    };
+  }, [isDarkMode]);
+
   const isLoggedIn = user !== null;
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
+  };
 
   return (
     <>
@@ -84,14 +106,20 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
                 className="me-2"
                 aria-label="Search"
               />
-
               <Button variant="outline-success m-2">Search</Button>
+
               {/* Dark Mode Button */}
               <button
                 className="DarkModeButtonSwitch"
                 style={{ margin: "0 8px" }}
+                onClick={toggleDarkMode}
+                aria-label="Toggle dark mode"
               >
-                <i className="fa-regular fa-moon"></i>
+                {isDarkMode ? (
+                  <i className="fa-solid fa-sun"></i>
+                ) : (
+                  <i className="fa-solid fa-moon"></i>
+                )}
               </button>
               {!isLoggedIn ? (
                 <>

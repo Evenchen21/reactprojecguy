@@ -5,10 +5,9 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Cart from "./components/Card";
-import Card from "./components/Card";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import About from "./components/About";
 
 // Route the different pages in the Code // PLEASE KEEP THIS DO NOT DELETE //
 
@@ -32,6 +31,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<About />} />
+        
       </Routes>
     </div>
   );

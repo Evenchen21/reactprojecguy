@@ -1,7 +1,7 @@
-import axios from "./axiosConfig";
+import axios from "axios";
 import Product from "../Interfaces/Product";
 
-const api: string = process.env.REACT_APP_API_PRODUCTS || "";
+const api = "http://localhost:8000/products";
 
 export function getAllProducts() {
   return axios.get(api);

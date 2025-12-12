@@ -1,6 +1,7 @@
-import axios from "./axiosConfig";
+import axios from "axios";
 
-const api: string = process.env.REACT_APP_API_CARDS || "";
+// Always point cards to the local JSON server
+const api: string = "http://localhost:8000/cards";
 
 export function getCardById(cardId: string) {
   return axios.get(`${api}/${cardId}`);

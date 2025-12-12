@@ -1,7 +1,6 @@
 import { FunctionComponent, SetStateAction, useEffect, useState } from "react";
 import { getAllProducts } from "../Services/productsService";
 import Product from "../Interfaces/Product";
-import { addToCard } from "../Services/cartsService";
 
 interface ProductsProps {}
 
@@ -46,15 +45,6 @@ const Products: FunctionComponent<ProductsProps> = () => {
                   <button
                     className="btn btn-primary"
                     disabled={!product.quantity}
-                    onClick={() => {
-                      addToCard(product)
-                        .then(() => {
-                          alert("Product was added to card successfully!");
-                        })
-                        .catch((err: any) => {
-                          // Error adding to card
-                        });
-                    }}
                   >
                     <i className="fa-solid fa-cart-shopping"></i> Add to Card
                   </button>

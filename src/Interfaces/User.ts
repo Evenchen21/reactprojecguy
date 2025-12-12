@@ -22,4 +22,5 @@ export default interface User {
   };
   isBusiness?: boolean;
   isAdmin?: boolean;
+  isLikedCards?: boolean;
 }

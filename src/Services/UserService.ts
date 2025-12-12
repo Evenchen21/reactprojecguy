@@ -1,7 +1,8 @@
 import axios from "./axiosConfig";
 import User from "../Interfaces/User";
 
-const api: string = process.env.REACT_APP_API_USERS || "";
+const api: string =
+  process.env.REACT_APP_API_USERS || "http://localhost:8000/users";
 
 // login - using POST method as per API documentation
 export function checkUser(credentials: { email: string; password: string }) {

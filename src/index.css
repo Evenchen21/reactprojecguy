@@ -10,3 +10,24 @@ body {
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body.dark-mode {
+  background-color: #000;
+  color: #fff;
+}
+
+body.dark-mode a,
+body.dark-mode button,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  color: #fff;
+  background-color: #111;
+  border-color: #444;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .navbar * {
+  background-color: #111 !important;
+  color: #fff !important;
+}
