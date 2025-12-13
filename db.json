@@ -68,8 +68,11 @@
         "zip": "78682"
       },
       "bizNumber": "4576033",
-      "isLikedCards": false,
-      "userId": "1"
+      "isLikedCards": true,
+      "userId": "1",
+      "likes": [
+        "653a608d1c7cd80c1fd27532"
+      ]
     },
     {
       "id": "2308992",

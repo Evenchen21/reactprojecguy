@@ -28,7 +28,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
       street: "",
       houseNumber: "",
       zipCode: "",
-      isBusiness: false, //default//
+      isBusiness: false, //default parameter//
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -87,7 +87,6 @@ const Register: FunctionComponent<RegisterProps> = () => {
           isBusiness: values.isBusiness,
         };
 
-        const response = await addUser(userData);
         toast.success("Registration successful! Signing in..");
         navigate("/home");
       } catch (err: any) {

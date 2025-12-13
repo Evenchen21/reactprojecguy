@@ -27,7 +27,7 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
       getUserById()
         .then((res) => setUser(res.data))
         .catch((err) => {
-          // Error fetching user
+          <></>;
         });
     }
   }, []);
@@ -64,7 +64,12 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <button style={{ margin: "0 8px" }}>About</button>
+              <button
+                style={{ margin: "0 8px" }}
+                onClick={() => navigate("/about")}
+              >
+                About
+              </button>
 
               {/* is user logged in and not a business user */}
               {isLoggedIn && !user?.isBusiness && !user?.isAdmin ? (
@@ -76,8 +81,12 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {/* user is business and logged in */}
               {user?.isBusiness && isLoggedIn ? (
                 <>
-                  <button style={{ margin: "0 8px" }}>My Cards</button>
-                  <button style={{ margin: "0 8px" }}>Create Card</button>
+                  <button
+                    style={{ margin: "0 8px" }}
+                    onClick={() => navigate("/myCards")}
+                  >
+                    My Cards
+                  </button>
                 </>
               ) : (
                 <> </>
@@ -86,8 +95,18 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {/* user is admin and logged in */}
               {user?.isAdmin && isLoggedIn ? (
                 <>
-                  <button style={{ margin: "0 8px" }}>Fav Cards</button>
-                  <button style={{ margin: "0 8px" }}>My Cards</button>
+                  <button
+                    style={{ margin: "0 8px" }}
+                    onClick={() => navigate("/favorites")}
+                  >
+                    Fav Cards
+                  </button>
+                  <button
+                    style={{ margin: "0 8px" }}
+                    onClick={() => navigate("/myCards")}
+                  >
+                    My Cards
+                  </button>
                   <button
                     style={{ margin: "0 8px" }}
                     onClick={() => navigate("/users")}
@@ -109,6 +128,7 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               <Button variant="outline-success m-2">Search</Button>
 
               {/* Dark Mode Button */}
+
               <button
                 className="DarkModeButtonSwitch"
                 style={{ margin: "0 8px" }}

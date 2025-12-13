@@ -15,7 +15,7 @@ const Cart: FunctionComponent<CardProps> = () => {
         setCards(res.data || []);
       })
       .catch((err: any) => {
-        // Error fetching cards
+        <></>;
       });
   }, []);
 
@@ -23,7 +23,7 @@ const Cart: FunctionComponent<CardProps> = () => {
     <>
       <NavBar />
       <div className="container">
-        <h4 className="display-4 text-center my-4">CARD</h4>
+        <h4 className="display-4 text-center my-4">My Cards</h4>
         {cards.length ? (
           <div className="row">
             {cards.map((cardItem: CardInterface) => (

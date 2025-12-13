@@ -13,7 +13,7 @@ const Products: FunctionComponent<ProductsProps> = () => {
         setProducts(res.data);
       })
       .catch((err: any) => {
-        // Error fetching products
+        <></>;
       });
   }, []);
 

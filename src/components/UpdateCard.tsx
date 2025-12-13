@@ -104,7 +104,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
       }),
     }),
     onSubmit: (values) => {
-      const payload = {
+      const update = {
         ...values,
         userId:
           values.userId ||
@@ -113,7 +113,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
           "",
       };
 
-      updateCard(cardId, payload)
+      updateCard(cardId, update)
         .then(() => {
           toast.success("Card updated successfully!");
           onHide();

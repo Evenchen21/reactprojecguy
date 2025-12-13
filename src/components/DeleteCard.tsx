@@ -17,7 +17,6 @@ const DeleteCard: FunctionComponent<DeleteCardProps> = ({
       .then(() => {
         onHide();
         refresh();
-        alert("Card deleted successfully!");
       })
       .catch((err) => {
         alert("Error deleting card");

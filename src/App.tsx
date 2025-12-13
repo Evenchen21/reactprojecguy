@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import About from "./components/About";
+import Favorite from "./components/Favorite";
+import MyCards from "./components/MyCards";
 
 // Route the different pages in the Code // PLEASE KEEP THIS DO NOT DELETE //
 
@@ -32,7 +34,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        
+        <Route path="/favorites" element={<Favorite />} />
+        <Route path="/myCards" element={<MyCards />} />
       </Routes>
     </div>
   );

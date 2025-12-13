@@ -7,6 +7,7 @@ import DeleteCardModal from "./DeleteCardModal";
 import UpdateCardModal from "./UpdateCardModal";
 import CreateCardModal from "./CreateCardModal";
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 interface HomeProps {
   isLoggedIn?: boolean;
@@ -30,18 +31,9 @@ const Home: FunctionComponent<HomeProps> = () => {
   const fetchCards = () => {
     getAllCards()
       .then((res) => {
-        const normalized = (res.data || []).map((c: any) => ({
-          ...c,
-          id: c.id || c._id,
-          likes: c.likes || [],
-          isLikedCards: c.isLikedCards ?? false,
-        }));
-        setCards(normalized);
+        setCards(res.data);
       })
-      .catch((err) => {
-        // Error fetching cards
-        setCards([]);
-      });
+      .catch(() => setCards([]));
   };
 
   useEffect(() => {
@@ -216,40 +208,7 @@ const Home: FunctionComponent<HomeProps> = () => {
         cardId={selectedCardId}
         refresh={fetchCards}
       />
-
-      {isLoggedIn && (
-        <>
-          {/* Footer navigation */}
-          <footer className="footer-nav">
-            <div className="footer-nav-inner">
-              <button
-                type="button"
-                className="footer-nav-item"
-                onClick={() => navigate("/home#about")}
-              >
-                <i className="fa-solid fa-circle-info" aria-hidden="true"></i>
-                <span>About</span>
-              </button>
-              <button
-                type="button"
-                className="footer-nav-item"
-                onClick={() => navigate("/home")}
-              >
-                <i className="fa-solid fa-heart" aria-hidden="true"></i>
-                <span>Favorites</span>
-              </button>
-              <button
-                type="button"
-                className="footer-nav-item"
-                onClick={() => navigate("/home")}
-              >
-                <i className="fa-solid fa-id-card" aria-hidden="true"></i>
-                <span>My Cards</span>
-              </button>
-            </div>
-          </footer>
-        </>
-      )}
+      <Footer isLoggedIn={isLoggedIn} />
     </>
   );
 };
