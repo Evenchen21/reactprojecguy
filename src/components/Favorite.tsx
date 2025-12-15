@@ -1,23 +1,32 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import CardInterface from "../Interfaces/Card";
-import { getAllCards, updateCard } from "../Services/CardService";
+import { getAllCards } from "../Services/CardService";
 
 interface FavoriteProps {}
 
 const Favorite: FunctionComponent<FavoriteProps> = () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
 
   const fetchCards = () => {
+    setLoading(true);
     getAllCards()
       .then((res) => {
-        setCards(res.data);
+        const normalized = (res.data || []).map((c: any) => ({
+          ...c,
+          id: c.id || c._id,
+          likes: c.likes || [],
+        }));
+
+        setCards(normalized);
       })
-      .catch(() => setCards([]));
+      .catch(() => setCards([]))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -37,33 +46,63 @@ const Favorite: FunctionComponent<FavoriteProps> = () => {
     fetchCards();
   }, []);
 
+  // If user details load after initial render, re-fetch so filtering works
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCards();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
+
   const currentUserId = user?._id || user?.id || user?.userId || "";
+
+  const favoritesStorageKey = currentUserId
+    ? `favorites:${currentUserId}`
+    : "favorites:anonymous";
+
+  const getFavoriteIds = (): string[] => {
+    try {
+      const raw = localStorage.getItem(favoritesStorageKey);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const setFavoriteIds = (ids: string[]) => {
+    try {
+      localStorage.setItem(favoritesStorageKey, JSON.stringify(ids));
+    } catch {
+      // ignore storage errors
+    }
+  };
 
   const isCardLiked = (card: CardInterface) => {
     if (!currentUserId) return false;
-    return (card.likes || []).includes(currentUserId);
+    const cardId = card.id || (card as any)._id;
+    if (!cardId) return false;
+    return getFavoriteIds().includes(String(cardId));
   };
 
   const toggleFavorite = async (card: CardInterface) => {
-    if (!card.id || !currentUserId) return;
+    const cardId = card.id || (card as any)._id;
+    if (!cardId || !currentUserId) return;
 
     const liked = isCardLiked(card);
-    const nextLikes = liked
-      ? (card.likes || []).filter((id) => id !== currentUserId)
-      : [...(card.likes || []), currentUserId];
+    const prevFavorites = getFavoriteIds();
+    const nextFavorites = liked
+      ? prevFavorites.filter((id) => id !== String(cardId))
+      : [...prevFavorites, String(cardId)];
+    setFavoriteIds(nextFavorites);
 
-    const updatedCard = {
-      ...card,
-      likes: nextLikes,
-      isLikedCards: !liked,
-    };
-
-    await updateCard(card.id, updatedCard);
-    setCards((prev) => prev.map((c) => (c.id === card.id ? updatedCard : c)));
+    // Re-render
+    setCards((prev) => [...prev]);
   };
 
+  const favoriteIds = new Set(getFavoriteIds());
   const favoriteCards = currentUserId
-    ? cards.filter((c) => (c.likes || []).includes(currentUserId))
+    ? cards.filter((c) => favoriteIds.has(String(c.id || (c as any)._id)))
     : [];
 
   return (
@@ -75,6 +114,12 @@ const Favorite: FunctionComponent<FavoriteProps> = () => {
         {!isLoggedIn ? (
           <div className="alert alert-info text-center">
             Please log in to view your favorite cards.
+          </div>
+        ) : loading ? (
+          <div className="d-flex justify-content-center my-5">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
           </div>
         ) : favoriteCards.length === 0 ? (
           <div className="alert alert-secondary text-center">

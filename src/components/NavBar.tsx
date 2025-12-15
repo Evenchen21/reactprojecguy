@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FunctionComponent, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import User from "../Interfaces/User";
 import { useNavigate } from "react-router-dom";
 import { getUserById } from "../Services/UserService";
 
-interface NarBarProps {}
-
-const NarBar: FunctionComponent<NarBarProps> = () => {
+const NarBar: FunctionComponent = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const stored = localStorage.getItem("isDarkMode");
@@ -26,9 +22,7 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
     if (userId) {
       getUserById()
         .then((res) => setUser(res.data))
-        .catch((err) => {
-          <></>;
-        });
+        .catch(() => setUser(null));
     }
   }, []);
 
@@ -56,7 +50,17 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
-          <Navbar.Brand href="/home">BCard</Navbar.Brand>
+          <Navbar.Brand
+            href="/home"
+            className="fw-bold"
+            style={{
+              color: "black",
+              letterSpacing: "0.5px",
+              fontSize: "1.25rem",
+            }}
+          >
+            BCard
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -65,7 +69,8 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               navbarScroll
             >
               <button
-                style={{ margin: "0 8px" }}
+                type="button"
+                className="btn btn-outline-primary btn-sm mx-2"
                 onClick={() => navigate("/about")}
               >
                 About
@@ -73,7 +78,12 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
 
               {/* is user logged in and not a business user */}
               {isLoggedIn && !user?.isBusiness && !user?.isAdmin ? (
-                <button style={{ margin: "0 8px" }}>Fav Cards</button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mx-2"
+                >
+                  Fav Cards
+                </button>
               ) : (
                 <> </>
               )}
@@ -82,7 +92,8 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {user?.isBusiness && isLoggedIn ? (
                 <>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/myCards")}
                   >
                     My Cards
@@ -96,20 +107,23 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {user?.isAdmin && isLoggedIn ? (
                 <>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/favorites")}
                   >
                     Fav Cards
                   </button>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/myCards")}
                   >
                     My Cards
                   </button>
                   <button
-                    style={{ margin: "0 8px" }}
-                    onClick={() => navigate("/users")}
+                    type="button"
+                    className="btn btn-outline-info btn-sm mx-2"
+                    onClick={() => navigate("/admin")}
                   >
                     Admin Sandbox
                   </button>
@@ -130,8 +144,8 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {/* Dark Mode Button */}
 
               <button
-                className="DarkModeButtonSwitch"
-                style={{ margin: "0 8px" }}
+                type="button"
+                className="btn btn-outline-dark btn-sm mx-2 DarkModeButtonSwitch"
                 onClick={toggleDarkMode}
                 aria-label="Toggle dark mode"
               >
@@ -144,13 +158,15 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
               {!isLoggedIn ? (
                 <>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/register")}
                   >
                     SIGNUP
                   </button>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-primary btn-sm mx-2"
                     onClick={() => navigate("/login")}
                   >
                     LOGIN
@@ -163,7 +179,8 @@ const NarBar: FunctionComponent<NarBarProps> = () => {
                 // logout the user and remove the session storage //
                 <>
                   <button
-                    style={{ margin: "0 8px" }}
+                    type="button"
+                    className="btn btn-outline-danger btn-sm mx-2"
                     onClick={() => {
                       sessionStorage.removeItem("userId");
                       setUser(null);

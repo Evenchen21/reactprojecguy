@@ -1,5 +1,7 @@
 export default interface Card {
+  // Local json-server uses `id`, hosted API uses `_id`
   id?: string;
+  _id?: string;
   title: string;
   subtitle: string;
   description: string;
@@ -21,5 +23,7 @@ export default interface Card {
   bizNumber: string;
   likes?: string[];
   isLikedCards?: boolean;
-  userId: string;
+  // Local json-server uses `userId`, hosted API uses `user_id`
+  userId?: string;
+  user_id?: string;
 }

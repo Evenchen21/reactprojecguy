@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import { FunctionComponent } from "react";
 import * as yup from "yup";
-import CardInterface from "../Interfaces/Card";
 import { addCard } from "../Services/CardService";
 import { toast } from "react-toastify";
 
@@ -35,8 +34,6 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
         zip: "",
       },
       bizNumber: "",
-      likes: [],
-      userId: sessionStorage.getItem("userId") || "",
     },
     validationSchema: yup.object({
       title: yup.string().required().min(2),
@@ -59,7 +56,28 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
       }),
     }),
     onSubmit: (values) => {
-      addCard(values)
+      const payload = {
+        title: values.title,
+        subtitle: values.subtitle,
+        description: values.description,
+        phone: values.phone,
+        email: values.email,
+        web: values.web,
+        image: {
+          url: values.image?.url,
+          alt: values.image?.alt,
+        },
+        address: {
+          state: values.address?.state,
+          country: values.address?.country,
+          city: values.address?.city,
+          street: values.address?.street,
+          houseNumber: values.address?.houseNumber,
+          zip: values.address?.zip,
+        },
+      };
+
+      addCard(payload)
         .then(() => {
           toast.success("Card created successfully!");
           formik.resetForm();
@@ -67,8 +85,11 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
           onHide();
         })
         .catch((err) => {
+          const status = err?.response?.status;
           const errorMessage =
-            err.response?.data || err.message || "Failed to create card";
+            status === 401 || status === 403
+              ? "You must be logged in to create a card."
+              : err.response?.data || err.message || "Failed to create card";
           toast.error(errorMessage);
         });
     },

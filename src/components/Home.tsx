@@ -1,13 +1,13 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
 import NavBar from "./NavBar";
 import CardInterface from "../Interfaces/Card";
-import { getAllCards, updateCard } from "../Services/CardService";
+import { getAllCards } from "../Services/CardService";
 import DeleteCardModal from "./DeleteCardModal";
 import UpdateCardModal from "./UpdateCardModal";
 import CreateCardModal from "./CreateCardModal";
-import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+import { toast } from "react-toastify";
 
 interface HomeProps {
   isLoggedIn?: boolean;
@@ -17,8 +17,8 @@ interface HomeProps {
 }
 
 const Home: FunctionComponent<HomeProps> = () => {
-  const navigate = useNavigate();
   const [cards, setCards] = useState<CardInterface[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -29,11 +29,19 @@ const Home: FunctionComponent<HomeProps> = () => {
   const [selectedCardId, setSelectedCardId] = useState<string>("");
 
   const fetchCards = () => {
+    setLoading(true);
     getAllCards()
       .then((res) => {
-        setCards(res.data);
+        const normalized = (res.data || []).map((c: any) => ({
+          ...c,
+          // Hosted API uses _id, local uses id
+          id: c.id || c._id,
+          likes: c.likes || [],
+        }));
+        setCards(normalized);
       })
-      .catch(() => setCards([]));
+      .catch(() => setCards([]))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -57,34 +65,59 @@ const Home: FunctionComponent<HomeProps> = () => {
 
   const currentUserId = user?._id || user?.id || user?.userId || "";
 
+  const favoritesStorageKey = currentUserId
+    ? `favorites:${currentUserId}`
+    : "favorites:anonymous";
+
+  const getFavoriteIds = (): string[] => {
+    try {
+      const raw = localStorage.getItem(favoritesStorageKey);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const setFavoriteIds = (ids: string[]) => {
+    try {
+      localStorage.setItem(favoritesStorageKey, JSON.stringify(ids));
+    } catch {
+      // ignore storage errors
+    }
+  };
+
   const isCardLiked = (card: CardInterface) => {
     if (!currentUserId) return false;
-    return (card.likes || []).includes(currentUserId);
+    const cardId = card.id || (card as any)._id;
+    if (!cardId) return false;
+    return getFavoriteIds().includes(String(cardId));
   };
 
   const toggleFavorite = async (card: CardInterface) => {
-    if (!card.id) return;
+    const cardId = card.id || (card as any)._id;
+    if (!cardId) return;
     if (!currentUserId) {
       return;
     }
 
     try {
       const liked = isCardLiked(card);
-      const nextLikes = liked
-        ? (card.likes || []).filter((id) => id !== currentUserId)
-        : [...(card.likes || []), currentUserId];
+      const prevFavorites = getFavoriteIds();
+      const nextFavorites = liked
+        ? prevFavorites.filter((id) => id !== String(cardId))
+        : [...prevFavorites, String(cardId)];
+      setFavoriteIds(nextFavorites);
 
-      const updatedCard = {
-        ...card,
-        likes: nextLikes,
-        isLikedCards: !liked,
-      };
-
-      await updateCard(card.id, updatedCard);
-
-      setCards((prev) => prev.map((c) => (c.id === card.id ? updatedCard : c)));
+      // Optional: try to persist on server if supported.
+      // The DigitalOcean bcard2 API rejects `likes` updates via PUT (Joi: "likes" is not allowed)
+      // so we keep favorites locally.
+      setCards((prev) => [...prev]);
     } catch (error) {
-      // handle error silently for now
+      const err: any = error;
+      toast.error(
+        err?.response?.data || err?.message || "Failed to update favorite"
+      );
     }
   };
 
@@ -106,7 +139,13 @@ const Home: FunctionComponent<HomeProps> = () => {
         )}
 
         <h4 className="display-4 text-center my-4">Business Cards</h4>
-        {cards.length ? (
+        {loading ? (
+          <div className="d-flex justify-content-center my-5">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : cards.length ? (
           <div className="row">
             {cards.map((card: CardInterface) => (
               <div className="col-md-4 mb-4" key={card.id || ""}>

@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import About from "./components/About";
 import Favorite from "./components/Favorite";
 import MyCards from "./components/MyCards";
+import Admin from "./components/Admin";
 
 // Route the different pages in the Code // PLEASE KEEP THIS DO NOT DELETE //
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/favorites" element={<Favorite />} />
         <Route path="/myCards" element={<MyCards />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </div>
   );
