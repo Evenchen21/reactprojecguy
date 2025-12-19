@@ -16,6 +16,7 @@ import Admin from "./components/Admin";
 
 function App() {
   return (
+    // Main Application Component with Routing and Toast Notifications //
     <div className="App">
       <ToastContainer
         position="top-right"
@@ -29,6 +30,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
+      {/* // Application Routes // */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
