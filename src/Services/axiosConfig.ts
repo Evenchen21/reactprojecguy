@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
       config.headers["x-auth-token"] = token;
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => Promise.reject(error)
@@ -23,7 +22,17 @@ axiosInstance.interceptors.request.use(
 // Add a response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  (error) => {
+    const status = error?.response?.status;
+
+    // Standardize common auth errors so the UI can show one clear message.
+    if (status === 401 || status === 403) {
+      error.isAuthError = true;
+      error.friendlyMessage = "You must be logged in to perform this action.";
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 export default axiosInstance;

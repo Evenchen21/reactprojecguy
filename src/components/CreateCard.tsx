@@ -85,12 +85,17 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
           onHide();
         })
         .catch((err) => {
+          if (err?.isAuthError) {
+            toast.error("You must be logged in to create a card.");
+            return;
+          }
+
           const status = err?.response?.status;
-          const errorMessage =
-            status === 401 || status === 403
-              ? "You must be logged in to create a card."
-              : err.response?.data || err.message || "Failed to create card";
-          toast.error(errorMessage);
+          const apiMessage = err?.response?.data;
+          const fallback = err?.message || "Failed to create card";
+          toast.error(
+            status ? `${fallback} (HTTP ${status})` : apiMessage || fallback
+          );
         });
     },
   });

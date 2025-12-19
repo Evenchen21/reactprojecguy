@@ -1,46 +1,91 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+{[{# BCard – פרויקט React + TypeScript
+    
+אפליקציה להצגת וניהול כרטיסי ביקור (Business Cards) עם התחברות/הרשמה, יצירה/עדכון/מחיקה של כרטיסים (CRUD), ומועדפים (Favorites).
+    
+## מה יש במערכת
+    
+- **דפים (Routes):**
+    
+`/home` – רשימת כרטיסים + פעולות (לפי הרשאות)
+- `/login` – התחברות (JWT)
+- `/register` – הרשמה (כולל Business User)
+- `/favorites` – כרטיסים במועדפים
+`/myCards` – הכרטיסים שלי (לביזנס/אדמין)
+`/admin` – אזור ניסויים/ניהול (לאדמין)
+- `/about` – אודות
+    
+- **UX וטכנולוגיות:**
+React + TypeScript
+- React Router
+React-Bootstrap
+- Formik + Yup לטפסים וולידציה
+Toast notifications (react-toastify)
+    
+## התממשקות ל־API ואימות (JWT)
+    
+- אחרי התחברות (`Login`) השרת מחזיר **JWT**.
+- הטוקן נשמר כ־`sessionStorage.token`.
+- בנוסף נשמרים:
+`sessionStorage.userDetails` – תוכן מפוענח מהטוקן (לדוגמה `isAdmin`, `isBusiness`, `_id`)
+`sessionStorage.userId`
+    
+### axiosConfig (אחראי על אימות אוטומטי)
+    
+הקובץ `src/Services/axiosConfig.ts` יוצר axios instance שמוסיף לפני כל בקשה headers של הרשאה (אם יש token):
+    
+- `x-auth-token: <token>`
+- `Authorization: Bearer <token>`
+    
+בנוסף, אם חוזרת שגיאת הרשאה (`401/403`) הוא מסמן את השגיאה כדי שה־UI יוכל להציג הודעה אחידה.
+    
+> טיפ: אם אתה מקבל `403` ביצירת כרטיס, זה בדרך כלל אומר שהמשתמש מחובר אבל **אין לו הרשאת Business/Admin** או שה־API של users/cards לא על אותו שרת.
+    
+## מועדפים (Favorites)
+    
+המועדפים נשמרים ב־`localStorage` לפי משתמש (מפתח בסגנון):
+`favorites:<userId>`
+    
+הסיבה לכך: בחלק מה־APIs המארחים לא מאפשרים לעדכן `likes` ב־PUT, לכן המועדפים נשמרים מקומית.
+    
+## מבנה הפרויקט (בקצרה)
+    
+- `src/App.tsx` – הגדרת Routes
+- `src/components/*` – דפים ו־UI (Home/Login/Register/…)
+- `src/Services/*` – שכבת קריאות לשרת (Users/Cards + axiosConfig)
+- `src/Interfaces/*` – טיפוסים (Card/User/Product)
+    
+שירותים עיקריים:
+    
+- `src/Services/UserService.ts` – register/login + פעולות משתמש
+- `src/Services/CardService.ts` – CRUD לכרטיסים
+    
+## איך מריצים
+    
+1. התקנת תלותיות:
+    
+```bash
+npm install
+```
+    
+2. הרצה בפיתוח:
+    
+```bash
+npm start
+```
+    
+3. בנייה לפרודקשן:
+    
+```bash
+npm run build
+```
+    
+## הגדרות ENV (אופציונלי)
+    
+כדי לעבוד מול API מרוחק, מגדירים משתני סביבה (לדוגמה בקובץ `.env`):
+    
+- `REACT_APP_API_USERS=".../users"`
+- `REACT_APP_API_CARDS=".../cards"`
+    
+חשוב: מומלץ שה־Users וה־Cards יהיו על **אותו דומיין/שרת**, כדי שה־token יהיה תקף לשניהם.
+    
+}]}
