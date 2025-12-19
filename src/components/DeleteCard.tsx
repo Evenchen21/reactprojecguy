@@ -12,6 +12,7 @@ const DeleteCard: FunctionComponent<DeleteCardProps> = ({
   cardId,
   refresh,
 }) => {
+  // Function to handle card deletion
   const handleDelete = () => {
     deleteCard(cardId)
       .then(() => {
@@ -23,6 +24,7 @@ const DeleteCard: FunctionComponent<DeleteCardProps> = ({
       });
   };
 
+  // Delete Card Confirmation Dialog/Modal
   return (
     <>
       <div className="container text-center">

@@ -1,5 +1,5 @@
 import { FunctionComponent, SetStateAction, useEffect, useState } from "react";
-import { getAllProducts } from "../Services/productsService";
+import { getAllCards } from "../Services/CardService";
 import Product from "../Interfaces/Product";
 
 interface ProductsProps {}
@@ -7,8 +7,9 @@ interface ProductsProps {}
 const Products: FunctionComponent<ProductsProps> = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
+  // Fetch all products on component
   useEffect(() => {
-    getAllProducts()
+    getAllCards()
       .then((res: { data: SetStateAction<Product[]> }) => {
         setProducts(res.data);
       })
@@ -19,6 +20,7 @@ const Products: FunctionComponent<ProductsProps> = () => {
 
   return (
     <>
+      {/* Display products in a grid   */}
       <div className="container">
         <h4 className="display-4 text-center">PRODUCTS</h4>
         <div className="row">
@@ -52,7 +54,7 @@ const Products: FunctionComponent<ProductsProps> = () => {
               </div>
             ))
           ) : (
-            <p>No products</p>
+            <p>No products</p> // Show message if no products are available
           )}
         </div>
       </div>

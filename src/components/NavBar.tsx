@@ -9,14 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { getUserById } from "../Services/UserService";
 
 const NarBar: FunctionComponent = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate(); // Hook for navigation
+  const [user, setUser] = useState<User | null>(null); // User details
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const stored = localStorage.getItem("isDarkMode");
     return stored === "true";
   });
-
-  const navigate = useNavigate();
-
+  // Fetch user details on component
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
     if (userId) {
@@ -26,13 +25,13 @@ const NarBar: FunctionComponent = () => {
     }
   }, []);
 
+  // Apply dark mode class to body and store preference
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add("dark-mode");
     } else {
       document.body.classList.remove("dark-mode");
     }
-
     localStorage.setItem("isDarkMode", String(isDarkMode));
 
     return () => {
@@ -48,6 +47,7 @@ const NarBar: FunctionComponent = () => {
 
   return (
     <>
+      {/* Navigation Bar with dynamic links based on user status */}
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
           <Navbar.Brand
@@ -69,6 +69,7 @@ const NarBar: FunctionComponent = () => {
               navbarScroll
             >
               <button
+                // About page navigation button
                 type="button"
                 className="btn btn-outline-primary btn-sm mx-2"
                 onClick={() => navigate("/about")}
@@ -78,6 +79,7 @@ const NarBar: FunctionComponent = () => {
 
               {/* is user logged in and not a business user */}
               {isLoggedIn && !user?.isBusiness && !user?.isAdmin ? (
+                // Favorite page navigation button
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm mx-2"
@@ -90,6 +92,7 @@ const NarBar: FunctionComponent = () => {
 
               {/* user is business and logged in */}
               {user?.isBusiness && isLoggedIn ? (
+                // My Cards page navigation button for business users
                 <>
                   <button
                     type="button"
@@ -105,8 +108,10 @@ const NarBar: FunctionComponent = () => {
 
               {/* user is admin and logged in */}
               {user?.isAdmin && isLoggedIn ? (
+                // Admin Sandbox page navigation button
                 <>
                   <button
+                    // Favorite Cards page navigation button
                     type="button"
                     className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/favorites")}
@@ -114,6 +119,7 @@ const NarBar: FunctionComponent = () => {
                     Fav Cards
                   </button>
                   <button
+                    // My Cards page navigation button
                     type="button"
                     className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/myCards")}
@@ -121,6 +127,7 @@ const NarBar: FunctionComponent = () => {
                     My Cards
                   </button>
                   <button
+                    // Admin Sandbox page navigation button
                     type="button"
                     className="btn btn-outline-info btn-sm mx-2"
                     onClick={() => navigate("/admin")}
@@ -141,23 +148,26 @@ const NarBar: FunctionComponent = () => {
               />
               <Button variant="outline-success m-2">Search</Button>
 
-              {/* Dark Mode Button */}
-
               <button
+                // Dark Mode Button
                 type="button"
                 className="btn btn-outline-dark btn-sm mx-2 DarkModeButtonSwitch"
                 onClick={toggleDarkMode}
                 aria-label="Toggle dark mode"
               >
                 {isDarkMode ? (
+                  // Sun icon for light mode
                   <i className="fa-solid fa-sun"></i>
                 ) : (
+                  // Moon icon for dark mode
                   <i className="fa-solid fa-moon"></i>
                 )}
               </button>
               {!isLoggedIn ? (
+                // Show Signup/Login buttons when not logged in
                 <>
                   <button
+                    // Signup page navigation button
                     type="button"
                     className="btn btn-outline-primary btn-sm mx-2"
                     onClick={() => navigate("/register")}
@@ -165,6 +175,7 @@ const NarBar: FunctionComponent = () => {
                     SIGNUP
                   </button>
                   <button
+                    // Login page navigation button
                     type="button"
                     className="btn btn-primary btn-sm mx-2"
                     onClick={() => navigate("/login")}
@@ -179,6 +190,7 @@ const NarBar: FunctionComponent = () => {
                 // logout the user and remove the session storage //
                 <>
                   <button
+                    // Logout button
                     type="button"
                     className="btn btn-outline-danger btn-sm mx-2"
                     onClick={() => {

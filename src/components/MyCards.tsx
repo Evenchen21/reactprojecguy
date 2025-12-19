@@ -5,6 +5,7 @@ import Footer from "./Footer";
 interface MyCardsProps {}
 
 const MyCards: FunctionComponent<MyCardsProps> = () => {
+  // My Cards Page displaying user's cards and footer
   return (
     <>
       <Card />

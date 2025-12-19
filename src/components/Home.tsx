@@ -17,24 +17,25 @@ interface HomeProps {
 }
 
 const Home: FunctionComponent<HomeProps> = () => {
-  const [cards, setCards] = useState<CardInterface[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isBusiness, setIsBusiness] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
-  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-  const [selectedCardId, setSelectedCardId] = useState<string>("");
+  const [cards, setCards] = useState<CardInterface[]>([]); // All cards
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // User login state
+  const [user, setUser] = useState<any>(null); // User details
+  const [isAdmin, setIsAdmin] = useState<boolean>(false); // Admin status
+  const [isBusiness, setIsBusiness] = useState<boolean>(false); // Business status
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false); // Delete modal visibility
+  const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false); // Update modal visibility
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false); // Create modal visibility
+  const [selectedCardId, setSelectedCardId] = useState<string>(""); // Selected card ID for modals
 
   const fetchCards = () => {
+    // Fetch all cards on component
     setLoading(true);
     getAllCards()
       .then((res) => {
+        // Normalize card data
         const normalized = (res.data || []).map((c: any) => ({
           ...c,
-          // Hosted API uses _id, local uses id
           id: c.id || c._id,
           likes: c.likes || [],
         }));
@@ -48,10 +49,10 @@ const Home: FunctionComponent<HomeProps> = () => {
     // Checking if user is logged in and get user details
     const userId = sessionStorage.getItem("userId");
     const userDetailsStr = sessionStorage.getItem("userDetails");
-
     if (userId && userDetailsStr) {
       setIsLoggedIn(true);
       try {
+        // Parse user details from session storage
         const userDetails = JSON.parse(userDetailsStr);
         setUser(userDetails);
         setIsAdmin(userDetails.isAdmin || false);
@@ -62,13 +63,14 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
     fetchCards();
   }, []);
-
+  // Refetch cards when login state changes
   const currentUserId = user?._id || user?.id || user?.userId || "";
 
   const favoritesStorageKey = currentUserId
     ? `favorites:${currentUserId}`
     : "favorites:anonymous";
 
+  // Functions to get and set favorite card IDs in localStorage
   const getFavoriteIds = (): string[] => {
     try {
       const raw = localStorage.getItem(favoritesStorageKey);
@@ -78,7 +80,6 @@ const Home: FunctionComponent<HomeProps> = () => {
       return [];
     }
   };
-
   const setFavoriteIds = (ids: string[]) => {
     try {
       localStorage.setItem(favoritesStorageKey, JSON.stringify(ids));
@@ -87,6 +88,7 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
   };
 
+  // Check if a card is liked by the current user
   const isCardLiked = (card: CardInterface) => {
     if (!currentUserId) return false;
     const cardId = card.id || (card as any)._id;
@@ -102,16 +104,14 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
 
     try {
+      // Toggle favorite status locally
       const liked = isCardLiked(card);
       const prevFavorites = getFavoriteIds();
       const nextFavorites = liked
         ? prevFavorites.filter((id) => id !== String(cardId))
         : [...prevFavorites, String(cardId)];
       setFavoriteIds(nextFavorites);
-
-      // Optional: try to persist on server if supported.
-      // The DigitalOcean bcard2 API rejects `likes` updates via PUT (Joi: "likes" is not allowed)
-      // so we keep favorites locally.
+      // Update state to reflect changes
       setCards((prev) => [...prev]);
     } catch (error) {
       const err: any = error;
@@ -127,6 +127,7 @@ const Home: FunctionComponent<HomeProps> = () => {
       {/* add Create Card Button */}
       <div className="container">
         {(isBusiness || isAdmin) && (
+          // Create Card Button for Business/Admin/logged-In users
           <div className="d-flex justify-content-end mt-3 ms-1">
             <button
               className="btn btn-dark btn-lg"
@@ -140,12 +141,14 @@ const Home: FunctionComponent<HomeProps> = () => {
 
         <h4 className="display-4 text-center my-4">Business Cards</h4>
         {loading ? (
+          // Loading spinner
           <div className="d-flex justify-content-center my-5">
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
           </div>
         ) : cards.length ? (
+          // Display cards
           <div className="row">
             {cards.map((card: CardInterface) => (
               <div className="col-md-4 mb-4" key={card.id || ""}>
@@ -174,7 +177,6 @@ const Home: FunctionComponent<HomeProps> = () => {
                     </p>
                   </Card.Body>
                   <Card.Footer className="bg-white border-0 d-flex justify-content-between align-items-center">
-                    {/* Buttons */}
                     <button className="btn btn-link border-0 p-0 text-muted">
                       <i
                         className="fa-solid fa-phone"
@@ -184,8 +186,10 @@ const Home: FunctionComponent<HomeProps> = () => {
 
                     <div className="d-flex gap-3">
                       {(isAdmin || isBusiness) && (
+                        // Admin/Business card controls
                         <>
                           <button
+                            // Delete card button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
                               setSelectedCardId(card.id || "");
@@ -195,6 +199,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                             <i className="fa-solid fa-trash"></i>
                           </button>
                           <button
+                            // Edit card button
                             className="btn btn-link border-0 p-0 text-muted"
                             onClick={() => {
                               setSelectedCardId(card.id || "");
@@ -207,6 +212,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                       )}
 
                       {isLoggedIn && (
+                        // Toggle favorite status of a card
                         <button
                           className="btn btn-link border-0 p-0 text-muted"
                           onClick={() => toggleFavorite(card)}
@@ -225,7 +231,7 @@ const Home: FunctionComponent<HomeProps> = () => {
             ))}
           </div>
         ) : (
-          <> NO_CARDS_IS_AVAILABLE</>
+          <> NO_CARDS_IS_AVAILABLE</> // No cards available message
         )}
       </div>
 

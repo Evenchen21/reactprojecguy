@@ -8,106 +8,98 @@ import { getAllCards } from "../Services/CardService";
 interface FavoriteProps {}
 
 const Favorite: FunctionComponent<FavoriteProps> = () => {
-  const [cards, setCards] = useState<CardInterface[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(null);
+  const [cards, setCards] = useState<CardInterface[]>([]); // All cards
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // User login state
+  const [user, setUser] = useState<any>(null); // User details
 
+  // Fetch all cards on component
   const fetchCards = () => {
     setLoading(true);
     getAllCards()
       .then((res) => {
+        // Normalize card data
         const normalized = (res.data || []).map((c: any) => ({
           ...c,
           id: c.id || c._id,
           likes: c.likes || [],
         }));
-
+        // Update state with normalized cards
         setCards(normalized);
       })
       .catch(() => setCards([]))
       .finally(() => setLoading(false));
   };
-
+  // Fetch user details and cards on component
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
-    const userDetailsStr = sessionStorage.getItem("userDetails");
-
-    if (userId && userDetailsStr) {
+    const userDetails = sessionStorage.getItem("userDetails");
+    // Check if user is logged in and set user details
+    if (userId && userDetails) {
       setIsLoggedIn(true);
       try {
-        const userDetails = JSON.parse(userDetailsStr);
-        setUser(userDetails);
+        // Parse user details from session storage
+        const userDetailsParsed = JSON.parse(userDetails);
+        setUser(userDetailsParsed);
       } catch (error) {
-        <> </>;
+        <></>;
       }
     }
-
     fetchCards();
   }, []);
-
-  // If user details load after initial render, re-fetch so filtering works
+  // Refetch cards when login state changes
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchCards();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (isLoggedIn) fetchCards();
   }, [isLoggedIn]);
 
+  // Get current user ID
   const currentUserId = user?._id || user?.id || user?.userId || "";
+  // Key for storing favorites in localStorage
+  const storageKey = `favorites:${currentUserId || "anonymous"}`;
 
-  const favoritesStorageKey = currentUserId
-    ? `favorites:${currentUserId}`
-    : "favorites:anonymous";
-
+  // Functions to get and set favorite card IDs in localStorage
   const getFavoriteIds = (): string[] => {
-    try {
-      const raw = localStorage.getItem(favoritesStorageKey);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
+    const saved = localStorage.getItem(storageKey);
+    return saved ? JSON.parse(saved) : [];
   };
 
+  // Functions to get and set favorite card IDs in localStorage
   const setFavoriteIds = (ids: string[]) => {
-    try {
-      localStorage.setItem(favoritesStorageKey, JSON.stringify(ids));
-    } catch {
-      // ignore storage errors
+    localStorage.setItem(storageKey, JSON.stringify(ids));
+  };
+
+  // Check if a card is liked by the current user
+  const isCardLiked = (card: CardInterface): boolean => {
+    const cardId = String(card.id || (card as any)._id);
+    return getFavoriteIds().includes(cardId);
+  };
+
+  // Toggle favorite status of a card
+  const toggleFavorite = (card: CardInterface) => {
+    const cardId = String(card.id || (card as any)._id);
+    const favorites = getFavoriteIds();
+    const isLiked = favorites.includes(cardId);
+
+    if (isLiked) {
+      setFavoriteIds(favorites.filter((id) => id !== cardId));
+    } else {
+      setFavoriteIds([...favorites, cardId]);
     }
+
+    setCards([...cards]);
   };
 
-  const isCardLiked = (card: CardInterface) => {
-    if (!currentUserId) return false;
-    const cardId = card.id || (card as any)._id;
-    if (!cardId) return false;
-    return getFavoriteIds().includes(String(cardId));
-  };
-
-  const toggleFavorite = async (card: CardInterface) => {
-    const cardId = card.id || (card as any)._id;
-    if (!cardId || !currentUserId) return;
-
-    const liked = isCardLiked(card);
-    const prevFavorites = getFavoriteIds();
-    const nextFavorites = liked
-      ? prevFavorites.filter((id) => id !== String(cardId))
-      : [...prevFavorites, String(cardId)];
-    setFavoriteIds(nextFavorites);
-
-    // Re-render
-    setCards((prev) => [...prev]);
-  };
-
-  const favoriteIds = new Set(getFavoriteIds());
-  const favoriteCards = currentUserId
-    ? cards.filter((c) => favoriteIds.has(String(c.id || (c as any)._id)))
-    : [];
+  // Filter favorite cards for display
+  const favoriteIds = getFavoriteIds();
+  const favoriteCards = cards.filter((card) => {
+    const cardId = String(card.id || (card as any)._id);
+    return favoriteIds.includes(cardId);
+  });
 
   return (
     <>
       <NavBar />
+      {/* Favorite Cards Display */}
       <div className="container my-4">
         <h1 className="mb-4 text-center">Favorite Cards</h1>
 
@@ -163,6 +155,7 @@ const Favorite: FunctionComponent<FavoriteProps> = () => {
 
                     <div className="d-flex gap-3">
                       <button
+                        // Toggle favorite status of a card
                         className="btn btn-link border-0 p-0 text-muted"
                         onClick={() => toggleFavorite(card)}
                       >

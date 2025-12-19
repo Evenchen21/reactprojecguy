@@ -1,4 +1,4 @@
-import axios from "./axiosConfig";
+import axios from "./AxiosConfig";
 import User from "../Interfaces/User";
 // Define the base API URL for users //
 const api: string =

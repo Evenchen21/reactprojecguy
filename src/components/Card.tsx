@@ -8,7 +8,7 @@ interface CardProps {}
 
 const Cart: FunctionComponent<CardProps> = () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
-
+  // Fetch all cards on component
   useEffect(() => {
     getAllCards()
       .then((res: any) => {
@@ -22,6 +22,7 @@ const Cart: FunctionComponent<CardProps> = () => {
   return (
     <>
       <NavBar />
+      {/* Display user's cards */}
       <div className="container">
         <h4 className="display-4 text-center my-4">My Cards</h4>
         {cards.length ? (

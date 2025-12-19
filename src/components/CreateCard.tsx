@@ -76,7 +76,7 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
           zip: values.address?.zip,
         },
       };
-
+      //Create new card
       addCard(payload)
         .then(() => {
           toast.success("Card created successfully!");
@@ -84,12 +84,13 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
           refresh();
           onHide();
         })
+        // Handle errors during card creation
         .catch((err) => {
           if (err?.isAuthError) {
             toast.error("You must be logged in to create a card.");
             return;
           }
-
+          // Handle other errors
           const status = err?.response?.status;
           const apiMessage = err?.response?.data;
           const fallback = err?.message || "Failed to create card";
@@ -102,6 +103,7 @@ const CreateCard: FunctionComponent<CreateCardProps> = ({
 
   return (
     <>
+      {/* Create Card Form */}
       <div className="container w-75">
         <form onSubmit={formik.handleSubmit}>
           <div className="form-floating mb-3">

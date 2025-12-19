@@ -3,6 +3,7 @@ import NavBar from "./NavBar";
 
 interface AboutProps {}
 
+//  About Component , talks about the app and its creator
 const About: FunctionComponent<AboutProps> = () => {
   return (
     <>

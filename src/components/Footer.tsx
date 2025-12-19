@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 const Footer: FunctionComponent<FooterProps> = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
 
   return (
     <>
@@ -18,7 +18,7 @@ const Footer: FunctionComponent<FooterProps> = ({ isLoggedIn }) => {
               <button
                 type="button"
                 className="footer-nav-item"
-                onClick={() => navigate("/about")}
+                onClick={() => navigate("/about")} // Navigate to About page
               >
                 <i className="fa-solid fa-circle-info" aria-hidden="true"></i>
                 <span>About</span>
@@ -26,7 +26,7 @@ const Footer: FunctionComponent<FooterProps> = ({ isLoggedIn }) => {
               <button
                 type="button"
                 className="footer-nav-item"
-                onClick={() => navigate("/favorites")}
+                onClick={() => navigate("/favorites")} // Navigate to Favorites page
               >
                 <i className="fa-solid fa-heart" aria-hidden="true"></i>
                 <span>Favorites</span>
@@ -34,7 +34,7 @@ const Footer: FunctionComponent<FooterProps> = ({ isLoggedIn }) => {
               <button
                 type="button"
                 className="footer-nav-item"
-                onClick={() => navigate("/myCards")}
+                onClick={() => navigate("/myCards")} // Navigate to My Cards page
               >
                 <i className="fa-solid fa-id-card" aria-hidden="true"></i>
                 <span>My Cards</span>

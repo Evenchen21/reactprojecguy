@@ -8,9 +8,9 @@ import { addUser } from "../Services/UserService";
 import { toast } from "react-toastify";
 
 const Register: FunctionComponent = () => {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate(); // Hook for navigation
   const formik = useFormik({
+    // Formik setup for form handling and validation
     initialValues: {
       firstName: "",
       lastName: "",
@@ -28,6 +28,7 @@ const Register: FunctionComponent = () => {
       isBusiness: true,
     },
     validationSchema: Yup.object({
+      // Validation rules for each form field
       firstName: Yup.string()
         .min(2, "First name must be at least 2 characters")
         .required("First name is required"),
@@ -64,6 +65,7 @@ const Register: FunctionComponent = () => {
         .required("Zip is required"),
     }),
     onSubmit: async (values) => {
+      // Handle form submission
       try {
         const houseNumber = Number(values.houseNumber);
         const zip = Number(values.zip);
@@ -91,10 +93,10 @@ const Register: FunctionComponent = () => {
           isBusiness: values.isBusiness,
         };
 
-        await addUser(userData);
+        await addUser(userData); // Call the service to add user
 
         toast.success("Account created successfully. You can now log in.");
-        navigate("/login");
+        navigate("/login"); // Navigate to login page after successful registration
       } catch (err: any) {
         const errorMessage =
           err.response?.data || err.message || "Registration failed";
@@ -239,10 +241,8 @@ const Register: FunctionComponent = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-
                 <hr className="my-3" />
                 <h5 className="mb-3 text-center">Address</h5>
-
                 <Row className="g-3">
                   <Col md={6}>
                     <Form.Group className="mb-3" controlId="state">
@@ -360,12 +360,12 @@ const Register: FunctionComponent = () => {
                     />
                   </Col>
                 </Row>
-
                 <div className="d-flex justify-content-center gap-2 mt-3">
                   <Button variant="success" type="submit">
                     Register
                   </Button>
                   <Button
+                    // Clear the form
                     variant="outline-secondary"
                     type="button"
                     onClick={() => formik.resetForm()}
@@ -375,9 +375,10 @@ const Register: FunctionComponent = () => {
                     Refresh
                   </Button>
                   <Button
+                    // Navigate to login page
                     variant="secondary"
                     type="button"
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/login")} // Navigate to login page
                   >
                     Back to Login
                   </Button>

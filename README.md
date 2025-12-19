@@ -1,91 +1,165 @@
-{[{# BCard – פרויקט React + TypeScript
-    
-אפליקציה להצגת וניהול כרטיסי ביקור (Business Cards) עם התחברות/הרשמה, יצירה/עדכון/מחיקה של כרטיסים (CRUD), ומועדפים (Favorites).
-    
-## מה יש במערכת
-    
-- **דפים (Routes):**
-    
-`/home` – רשימת כרטיסים + פעולות (לפי הרשאות)
-- `/login` – התחברות (JWT)
-- `/register` – הרשמה (כולל Business User)
-- `/favorites` – כרטיסים במועדפים
-`/myCards` – הכרטיסים שלי (לביזנס/אדמין)
-`/admin` – אזור ניסויים/ניהול (לאדמין)
-- `/about` – אודות
-    
-- **UX וטכנולוגיות:**
-React + TypeScript
-- React Router
-React-Bootstrap
-- Formik + Yup לטפסים וולידציה
-Toast notifications (react-toastify)
-    
-## התממשקות ל־API ואימות (JWT)
-    
-- אחרי התחברות (`Login`) השרת מחזיר **JWT**.
-- הטוקן נשמר כ־`sessionStorage.token`.
-- בנוסף נשמרים:
-`sessionStorage.userDetails` – תוכן מפוענח מהטוקן (לדוגמה `isAdmin`, `isBusiness`, `_id`)
-`sessionStorage.userId`
-    
-### axiosConfig (אחראי על אימות אוטומטי)
-    
-הקובץ `src/Services/axiosConfig.ts` יוצר axios instance שמוסיף לפני כל בקשה headers של הרשאה (אם יש token):
-    
-- `x-auth-token: <token>`
-- `Authorization: Bearer <token>`
-    
-בנוסף, אם חוזרת שגיאת הרשאה (`401/403`) הוא מסמן את השגיאה כדי שה־UI יוכל להציג הודעה אחידה.
-    
-> טיפ: אם אתה מקבל `403` ביצירת כרטיס, זה בדרך כלל אומר שהמשתמש מחובר אבל **אין לו הרשאת Business/Admin** או שה־API של users/cards לא על אותו שרת.
-    
-## מועדפים (Favorites)
-    
-המועדפים נשמרים ב־`localStorage` לפי משתמש (מפתח בסגנון):
-`favorites:<userId>`
-    
-הסיבה לכך: בחלק מה־APIs המארחים לא מאפשרים לעדכן `likes` ב־PUT, לכן המועדפים נשמרים מקומית.
-    
-## מבנה הפרויקט (בקצרה)
-    
-- `src/App.tsx` – הגדרת Routes
-- `src/components/*` – דפים ו־UI (Home/Login/Register/…)
-- `src/Services/*` – שכבת קריאות לשרת (Users/Cards + axiosConfig)
-- `src/Interfaces/*` – טיפוסים (Card/User/Product)
-    
-שירותים עיקריים:
-    
-- `src/Services/UserService.ts` – register/login + פעולות משתמש
-- `src/Services/CardService.ts` – CRUD לכרטיסים
-    
-## איך מריצים
-    
-1. התקנת תלותיות:
-    
+# Project - BCard 🪪
+
+אפליקציית Web מבוססת React ו־TypeScript לניהול כרטיסי ביקור דיגיטליים, הכוללת מערכת התחברות והרשמה, ניהול הרשאות לפי תפקיד, פעולות CRUD מלאות, וניהול מועדפים.
+
+הפרויקט מדגים ארכיטקטורה נקייה, אימות מבוסס JWT, ופתרון פרקטי בצד הלקוח עם שימוש ב API .
+
+---
+
+## 🚀 פיצ'רים מרכזיים
+
+- התחברות והרשמה למשתמשים (JWT)
+- ניהול הרשאות לפי תפקיד (User / Business / Admin)
+- יצירה, צפייה, עריכה ומחיקה (CRUD) של כרטיסי ביקור
+- ניהול מועדפים לכל משתמש
+- אזור ניהול ייעודי לאדמין
+- ממשק רספונסיבי באמצעות React-Bootstrap
+- טפסים עם וולידציה (Formik + Yup)
+- הודעות מערכת (Toast Notifications)
+
+---
+
+## 🧭 Routes
+
+| נתיב         | תיאור                                             |
+| ------------ | ------------------------------------------------- |
+| `/home`      | הצגת כל כרטיסי הביקור עם פעולות לפי הרשאות המשתמש |
+| `/login`     | התחברות למערכת (JWT)                              |
+| `/register`  | הרשמה למערכת, כולל משתמשים עסקיים                 |
+| `/favorites` | כרטיסים שסומנו כמועדפים                           |
+| `/myCards`   | כרטיסים של המשתמש המחובר (Business / Admin בלבד)  |
+| `/admin`     | אזור ניהול / ניסויים (Admin בלבד)                 |
+| `/about`     | דף אודות                                          |
+
+---
+
+## 🛠 טכנולוגיות
+
+- **Frontend:** React, TypeScript ,HTML ,CSS
+- **Routing:** React Router
+- **UI:** React-Bootstrap , FontAwesome, Google-Fonts
+- **Forms & Validation:** Formik, Yup
+- **HTTP Client:** Axios
+- **Notifications:** react-toastify
+- **Authentication:** JSON Web Tokens (JWT)
+
+---
+
+## 🔐 אימות והרשאות
+
+לאחר התחברות מוצלחת, השרת מחזיר **JWT**.
+
+### Session Storage
+
+הנתונים הבאים נשמרים ב־`sessionStorage`:
+
+- `token` – טוקן ה־JWT לצורך בקשות מאובטחות
+- `userDetails` – מידע מפוענח מהטוקן (`_id`, `isAdmin`, `isBusiness`)
+- `userId` – מזהה המשתמש המחובר
+
+מידע זה משמש להגנת נתיבים ולהצגת ממשק בהתאם להרשאות המשתמש.
+
+---
+
+## 🌐 הגדרת Axios
+
+כל הקריאות ל־API מתבצעות דרך מופע Axios מרכזי המוגדר בקובץ:
+
+```
+src/Services/AxiosConfig.ts
+```
+
+### תפקיד הקובץ:
+
+- הוספת headers של הרשאה אוטומטית אם קיים token:
+
+  - `x-auth-token: <token>`
+  - `Authorization: Bearer <token>`
+
+- זיהוי שגיאות `401 / 403` לצורך טיפול אחיד בצד ה־UI
+
+⚠️ **הערה:** שגיאת `403 Forbidden` ביצירת כרטיס לרוב מצביעה על כך שהמשתמש מחובר אך אינו מוגדר כ־Business או Admin, או ששירותי Users ו־Cards אינם פועלים על אותו שרת.
+
+---
+
+## ⭐ מועדפים (Favorites)
+
+המועדפים נשמרים בצד הלקוח באמצעות `localStorage`, דרך token ללא הצגת המידע האישי - בנפרד לכל משתמש.
+
+פורמט המפתח:
+
+```
+favorites:<userId>
+```
+
+---
+
+## 📁 מבנה הפרויקט
+
+```
+src/
+├── App.tsx              # הגדרת Routes
+├── components/          # דפים וקומפוננטות UI
+├── Services/            # שכבת תקשורת עם השרת
+│   ├── AxiosConfig.ts
+│   ├── UserService.ts
+│   └── CardService.ts
+├── Interfaces/          #(TypeScript Interfaces)
+```
+
+### שירותים עיקריים
+
+- **UserService** – התחברות, הרשמה ופעולות משתמש
+- **CardService** – פעולות CRUD על כרטיסי ביקור
+
+---
+
+## ▶️ התחלת עבודה
+
+### התקנת תלויות
+
 ```bash
 npm install
 ```
-    
-2. הרצה בפיתוח:
-    
+
+### הרצה במצב פיתוח
+
 ```bash
 npm start
 ```
-    
-3. בנייה לפרודקשן:
-    
+
+### בנייה לפרודקשן
+
 ```bash
 npm run build
 ```
-    
-## הגדרות ENV (אופציונלי)
-    
-כדי לעבוד מול API מרוחק, מגדירים משתני סביבה (לדוגמה בקובץ `.env`):
-    
-- `REACT_APP_API_USERS=".../users"`
-- `REACT_APP_API_CARDS=".../cards"`
-    
-חשוב: מומלץ שה־Users וה־Cards יהיו על **אותו דומיין/שרת**, כדי שה־token יהיה תקף לשניהם.
-    
-}]}
+
+---
+
+## ⚙️ משתני סביבה (אופציונלי)
+
+לעבודה מול API מרוחק, יש להגדיר קובץ `.env ` הוא לא בפרוייקט עצמו:
+
+```env
+REACT_APP_API_USERS=.../users
+REACT_APP_API_CARDS=.../cards
+```
+
+✅ **המלצה:** שירותי Users ו־Cards צריכים לפעול על **אותו דומיין/שרת**, כדי להבטיח תקינות של JWT בכל הבקשות.
+
+---
+
+## 📌 הערות
+
+הפרויקט שם דגש על:
+
+- הפרדת אחריות ברורה
+- תהליך אימות מאובטח
+- התמודדות עם מגבלות API בעולם האמיתי
+- ארכיטקטורת Frontend סקיילבילית ותחזוקתית ומודרנית.
+
+---
+
+## 👨‍💻 מחבר
+
+פותח על ידי גיא אבן חן / DarkPulse - במסגרת לימוד React ו־TypeScript, עם דגש על תבניות עבודה מקובלות ויישום מעשי.

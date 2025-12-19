@@ -8,7 +8,7 @@ interface DeleteCardModalProps {
   cardId: string;
   refresh: Function;
 }
-
+// Modal component for deleting a card
 const DeleteCardModal: FunctionComponent<DeleteCardModalProps> = ({
   show,
   onHide,

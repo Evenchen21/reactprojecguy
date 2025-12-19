@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 interface LoginProps {}
 
 const Login: FunctionComponent<LoginProps> = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -27,13 +27,14 @@ const Login: FunctionComponent<LoginProps> = () => {
     }),
     onSubmit: async (values) => {
       try {
+        // Call the API to check user credentials
         const response = await checkUser(values);
         // The API returns a token in response.data (string token)
         if (response.data) {
           // Store the JWT token
           sessionStorage.setItem("token", response.data);
 
-          // Decode and store user details
+          // Decode and store user details (used help to do it)
           const base64Url = response.data.split(".")[1];
           const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
           const jsonPayload = decodeURIComponent(
@@ -44,12 +45,13 @@ const Login: FunctionComponent<LoginProps> = () => {
               })
               .join("")
           );
+          // Parse user details from the decoded JWT payload
           const userDetails = JSON.parse(jsonPayload);
           sessionStorage.setItem("userDetails", JSON.stringify(userDetails));
           sessionStorage.setItem("userId", userDetails._id);
 
           toast.success("Login successful");
-          navigate("/home");
+          navigate("/home"); // Navigate to Home page after successful login
         } else {
           toast.error("Invalid Details");
         }
@@ -63,6 +65,7 @@ const Login: FunctionComponent<LoginProps> = () => {
   return (
     <>
       <NavBar />
+      {/* Login Form */}
       <Container className="mt-4">
         <h2>Login</h2>
         <Form onSubmit={formik.handleSubmit}>

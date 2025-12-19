@@ -17,8 +17,9 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
   cardId,
   refresh,
 }) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true); // Loading state for data fetching
   const [card, setCard] = useState<CardInterface>({
+    // Card data state
     id: "",
     title: "",
     subtitle: "",
@@ -43,6 +44,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
     userId: "",
   });
 
+  // Function to normalize card data
   const normalizeCard = (data: any): CardInterface => ({
     id: data.id || data._id || "",
     title: data.title || "",
@@ -68,6 +70,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
     userId: data.userId || sessionStorage.getItem("userId") || "",
   });
 
+  // Fetch card details on component
   useEffect(() => {
     setLoading(true);
     getCardById(cardId)
@@ -79,7 +82,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
       })
       .finally(() => setLoading(false));
   }, [cardId]);
-
+  // Formik setup for form handling and validation
   const formik = useFormik({
     initialValues: card,
     enableReinitialize: true,
@@ -103,6 +106,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
         zip: yup.string().required(),
       }),
     }),
+    // Handle form submission
     onSubmit: (values) => {
       const update = {
         ...values,
@@ -112,7 +116,7 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
           sessionStorage.getItem("userId") ||
           "",
       };
-
+      // Call updateCard service
       updateCard(cardId, update)
         .then(() => {
           toast.success("Card updated successfully!");
@@ -389,7 +393,6 @@ const UpdateCard: FunctionComponent<UpdateCardProps> = ({
                 </div>
               </div>
             </div>
-
             <button className="btn btn-warning w-100" type="submit">
               UPDATE
             </button>

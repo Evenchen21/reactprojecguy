@@ -10,12 +10,14 @@ interface UpdateCardModalProps {
 }
 
 const UpdateCardModal: FunctionComponent<UpdateCardModalProps> = ({
+  // Modal component for updating an existing card
   show,
   onHide,
   cardId,
   refresh,
 }) => {
   return (
+    // Modal for updating a card
     <Modal show={show} onHide={() => onHide()} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Business Card Update </Modal.Title>
